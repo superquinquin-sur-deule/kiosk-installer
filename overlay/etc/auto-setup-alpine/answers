@@ -1,0 +1,25 @@
+KEYMAPOPTS="fr fr-azerty"
+HOSTNAMEOPTS="kiosk"
+DEVDOPTS="mdev"
+TIMEZONEOPTS="UTC"
+PROXYOPTS=none
+APKREPOSOPTS="-1"
+SSHDOPTS="openssh"
+NTPOPTS="openntpd"
+
+# Diskless
+DISKOPTS=none
+LBUOPTS=none
+APKCACHEOPTS=none
+
+# Admin user name and ssh key.
+USEROPTS="-a -u -g audio,video,netdev kiosk"
+# USERSSHKEY="ssh-rsa AAA... stefan@localhost"
+
+# Contents of /etc/network/interfaces
+INTERFACESOPTS="auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+"

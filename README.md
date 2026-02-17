@@ -2,20 +2,15 @@
 
 ## Building
 
-Unattended install of Superquinquin’s Linux kiosk.
+With `xorriso` et `qemu`
 
 ```bash
-docker build -t alpine-gen .
-docker run --privileged --rm \
-    --volume "$PWD"/dist:/dist \
-    alpine-gen --outdir /dist --profile virt
+make build
+make run
 ```
 
-## Testing
+## References
 
-```bash
-qemu-system-x86_64 \
-    -m 512M \
-    -nic user \
-    -cdrom dist/alpine-virt-*-x86_64.iso
-```
+- https://wiki.alpinelinux.org/wiki/How_to_make_a_custom_ISO_image_with_mkimage
+- https://github.com/fvanniere/alpine-custom
+- https://www.skreutz.com/posts/unattended-installation-of-alpine-linux/
