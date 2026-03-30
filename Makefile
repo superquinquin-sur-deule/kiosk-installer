@@ -1,5 +1,6 @@
 ISOBASEFILE=debian-13.3.0-amd64-netinst.iso
 ISOPRESEED=preseed-$(ISOBASEFILE)
+TESTVMDISK=test-disk.qcow2
 
 $(ISOPRESEED): initrd_final.gz
 	rm -f $(ISOPRESEED)
@@ -22,9 +23,14 @@ initrd_patch.gz:
 initrd_final.gz: initrd_original.gz initrd_patch.gz
 	cat $^ > $@
 
-test:
-	qemu-img create -f qcow2 test-disk.qcow2 2G
+$(TESTVMDISK):
+	qemu-img create -f qcow2 $@ 20G
+
+test-boot: $(TESTVMDISK)
 	qemu-system-x86_64 \
-	    -m 1G -net nic,model=virtio -net user \
-	    -cdrom preseed-debian-13.3.0-amd64-netinst.iso \
-	    -drive file=test-disk.qcow2,format=qcow2
+	    -enable-kvm -cpu host -smp 4 -m 1G \
+	    -net nic,model=virtio \
+	    -net user,hostfwd=tcp::2222-:22 \
+	    -serial stdio \
+	    -cdrom $(ISOPRESEED) \
+	    -drive file=$(TESTVMDISK),format=qcow2,if=virtio,cache=unsafe
