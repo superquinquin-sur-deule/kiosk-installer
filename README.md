@@ -27,14 +27,30 @@ Force a new installation
 make --always-make test-boot
 ```
 
-## Control preseed syntax
-
-```sh
-docker run --volume $PWD:/src --workdir /src --rm debian:bookworm-slim bash -c \
-    "apt-get update && apt-get install -y debconf-utils && debconf-set-selections -c preseed.cfg && echo ok"
-```
-
 References
 
 - https://wiki.debian.org/DebianInstaller/Preseed/EditIso
 - https://blog.lof.ovh/fr/posts/tutoriels/automatisation-installation-debian-avec-preseed/
+
+## Test Ansible playbook locally
+
+Start a git daemon in a new terminal
+
+```sh
+git daemon --reuseaddr --base-path=. --export-all --verbose --enable=receive-pack
+```
+
+Start preseeded VM on another terminal
+
+```sh
+make test-boot
+```
+
+Connect and execute ansible-pull manually
+
+```sh
+sudo systemctl stop kiosk-deploy
+
+export ANSIBLE_PYTHON_INTERPRETER="auto_silent" 
+ansible-pull --url git://10.0.2.2/ --checkout florent/ansible ansible/local.yml
+```
