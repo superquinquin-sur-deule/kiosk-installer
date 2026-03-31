@@ -10,7 +10,7 @@ EnvironmentFile=/etc/default/kiosk-deploy
 ExecStart=/usr/bin/ansible-pull \
     --url ${ANSIBLE_URL} \
     --checkout ${ANSIBLE_BRANCH} \
-    --directory /var/lib/ansible-pull \
+    --directory ${ANSIBLE_DIRECTORY} \
     --inventory localhost, \
     ansible/local.yml
 
