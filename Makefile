@@ -1,27 +1,31 @@
 ISOBASEFILE=debian-13.3.0-amd64-netinst.iso
 ISOPRESEED=preseed-$(ISOBASEFILE)
 TESTVMDISK=test-disk.qcow2
+INSTALLDIR=installer
 
-$(ISOPRESEED): initrd_final.gz
+$(ISOPRESEED): .xorrisorc
 	rm -f $(ISOPRESEED)
-	xorriso \
-	    -indev $(ISOBASEFILE) \
-	    -outdev $(ISOPRESEED) \
-	    -map $< /install.amd/initrd.gz \
-	    -map isolinux.cfg /isolinux/isolinux.cfg \
-	    -map grub.cfg /boot/grub/grub.cfg \
-	    -boot_image any replay -compliance no_emul_toc
+	xorriso -no_rc -options_from_file $<
 
-.INTERMEDIATE: initrd_original.gz initrd_patch.gz initrd_final.gz
+.INTERMEDIATE: initrd_original.gz initrd_patch.gz initrd_final.gz .xorrisorc
 
 initrd_original.gz:
 	osirrox -indev $(ISOBASEFILE) -extract /install.amd/initrd.gz $@
 
 initrd_patch.gz:
-	echo "preseed.cfg" | cpio -H newc -o | gzip -9 > $@
+	cd $(INSTALLDIR) ;\
+	echo preseed.cfg | cpio -H newc -o | gzip -9 > ../$@
 
 initrd_final.gz: initrd_original.gz initrd_patch.gz
 	cat $^ > $@
+
+.xorrisorc: initrd_final.gz
+	@echo "-indev $(ISOBASEFILE)" > $@
+	@echo "-outdev $(ISOPRESEED)" >> $@
+	@echo "-map $< /install.amd/initrd.gz" >> $@
+	@find $(INSTALLDIR) -type f -not -name preseed.cfg -printf "-map %p /%P\n" >> $@
+	@echo "-boot_image any replay" >> $@
+	@echo "-compliance no_emul_toc" >> $@
 
 $(TESTVMDISK):
 	qemu-img create -f qcow2 $@ 20G
