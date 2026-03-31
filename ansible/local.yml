@@ -1,0 +1,24 @@
+---
+- name: Configure kiosk
+  hosts: localhost
+  connection: local
+  become: true
+  tasks:
+    - name: Set hostname from machine-id
+      hostname:
+        name: "kiosk-{{ ansible_machine_id[:6] }}"
+
+    - name: "Synchronize /etc/hosts with new hostname"
+      lineinfile:
+        path: /etc/hosts
+        regexp: '^127\.0\.1\.1'
+        line: "127.0.1.1\t{{ ansible_hostname }}"
+        state: present
+
+    - name: Deploy MOTD
+      template:
+        src: templates/motd.j2
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: "0644"

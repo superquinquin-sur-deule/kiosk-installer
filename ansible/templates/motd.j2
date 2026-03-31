@@ -1,0 +1,12 @@
+┏━┓╻ ╻┏━┓┏━╸┏━┓┏━┓╻ ╻╻┏┓╻┏━┓╻ ╻╻┏┓╻
+┗━┓┃ ┃┣━┛┣╸ ┣┳┛┃┓┃┃ ┃┃┃┗┫┃┓┃┃ ┃┃┃┗┫
+┗━┛┗━┛╹  ┗━╸╹┗╸┗┻┛┗━┛╹╹ ╹┗┻┛┗━┛╹╹ ╹
+┏━┓╻ ╻┏━┓   ╺┳┓┏━╸╻ ╻╻  ┏━╸
+┗━┓┃ ┃┣┳┛    ┃┃┣╸ ┃ ┃┃  ┣╸
+┗━┛┗━┛╹┗╸   ╺┻┛┗━╸┗━┛┗━╸┗━╸
+
+  Poste  : {{ ansible_hostname }}
+  IP     : {{ ansible_default_ipv4.address | default('non connecté') }}
+  OS     : {{ ansible_distribution }} {{ ansible_distribution_version }}
+
+  Gestion : https://github.com/superquinquin-sur-deule/kiosk-installer.git ({{ ansible_date_time.date }})
