@@ -1,2 +1,3 @@
 ANSIBLE_URL=https://github.com/superquinquin-sur-deule/kiosk-installer.git
 ANSIBLE_BRANCH=main
+ANSIBLE_DIRECTORY=/var/lib/ansible/kiosk-installer

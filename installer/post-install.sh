@@ -1,13 +1,16 @@
 #!/bin/sh
 set -xe
+exec > /dev/ttyS0 2>&1
+
+ANSIBLE_HOME=/var/lib/ansible
+in-target usermod --home ${ANSIBLE_HOME} --move-home ansible
 
 cp -r /cdrom/assets/. /target/
+in-target chown -R ansible:ansible ${ANSIBLE_HOME}
+in-target chmod 700 ${ANSIBLE_HOME}
+in-target chmod 700 ${ANSIBLE_HOME}/.ssh
+in-target chmod 600 ${ANSIBLE_HOME}/.ssh/authorized_keys
 in-target chmod 440 /etc/sudoers.d/ansible
-
-in-target chown -R ansible:ansible /home/ansible
-in-target chmod 700 /home/ansible
-in-target chmod 700 /home/ansible/.ssh
-in-target chmod 600 /home/ansible/.ssh/authorized_keys
 
 in-target systemctl enable dbus
 in-target systemctl enable kiosk-deploy.service
