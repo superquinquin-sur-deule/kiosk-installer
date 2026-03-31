@@ -1,3 +1,4 @@
 *.gz
 *.iso
 *.qcow2
+.xorrisorc
