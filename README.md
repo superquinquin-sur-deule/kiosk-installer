@@ -10,47 +10,36 @@ Download a netinst ISO from debian.org
 make ISOBASEFILE=debian-13.3.0-amd64-netinst.iso
 ```
 
-## Test on QEMU/KVM
+## Tests
+
+### Booting
 
 Boot on a volatile 20GB-sized qcow file
 
-- write on `/dev/ttyS0` for debugging
-- connect with `ssh -p 2222 <user>@localhost`
+- Console output redirected to `/dev/ttyS0` for debugging.
+- Host-to-guest SSH through `ssh -F ssh_config kiosk-dev`.
+- Local `ansible/` directory shared via VirtFS with the `ansible` tag.
 
 ```sh
+# Start the VM
 make test-boot
-```
 
-Force a new installation
-
-```sh
+# Force a fresh install from ISO
 make --always-make test-boot
 ```
 
-References
+### Provisionning
 
-- https://wiki.debian.org/DebianInstaller/Preseed/EditIso
-- https://blog.lof.ovh/fr/posts/tutoriels/automatisation-installation-debian-avec-preseed/
-
-## Test Ansible playbook locally
-
-Start a git daemon in a new terminal
+The `ansible/` directory is mounted as a 9p volume inside the VM. This allows live
+editing of the playbook on the host and immediate execution on the guest.
 
 ```sh
-git daemon --reuseaddr --base-path=. --export-all --verbose --enable=receive-pack
+# Run the local-only playbook through SSH
+make test-ansible
 ```
 
-Start preseeded VM on another terminal
+## References
 
-```sh
-make test-boot
-```
-
-Connect and execute ansible-pull manually
-
-```sh
-sudo systemctl stop kiosk-deploy
-
-export ANSIBLE_PYTHON_INTERPRETER="auto_silent" 
-ansible-pull --url git://10.0.2.2/ --checkout florent/ansible ansible/local.yml
-```
+- Modifying an installation ISO image to preseed the installer from its initrd <https://wiki.debian.org/DebianInstaller/Preseed/EditIso>
+- Automatiser l’installation de Debian avec un fichier preseed.cfg <https://blog.lof.ovh/fr/posts/tutoriels/automatisation-installation-debian-avec-preseed/>
+- QEMU 9p setup <https://wiki.qemu.org/Documentation/9psetup>

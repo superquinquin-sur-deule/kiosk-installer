@@ -39,4 +39,11 @@ test-boot: $(TESTVMDISK)
 	    -net user,hostfwd=tcp::2222-:22 \
 	    -serial stdio \
 	    -cdrom $(ISOPRESEED) \
-	    -drive file=$(TESTVMDISK),format=qcow2,if=virtio,cache=unsafe
+	    -drive file=$(TESTVMDISK),format=qcow2,if=virtio,cache=unsafe \
+	    -virtfs local,path=ansible,mount_tag=ansible,readonly=on,security_model=none
+
+test-ansible: PLAYBOOK = kiosk-installer/ansible/local.yml
+test-ansible:
+	@ssh -F .ssh_config kiosk-dev \
+	    "sudo mount -t 9p -o trans=virtio ansible $(dir $(PLAYBOOK)) 2>/dev/null || true && \
+	    ansible-playbook $(PLAYBOOK) -i localhost,"
