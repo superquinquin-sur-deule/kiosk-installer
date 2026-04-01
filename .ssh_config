@@ -1,0 +1,8 @@
+Host kiosk-dev
+    HostName localhost
+    User ansible
+    Port 2222
+    RequestTTY yes
+    UserKnownHostsFile /dev/null
+    StrictHostKeyChecking no
+    LogLevel ERROR
