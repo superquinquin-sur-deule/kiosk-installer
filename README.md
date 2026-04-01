@@ -2,12 +2,29 @@
 
 Unattended install of Superquinquin’s Linux kiosk.
 
-## Build
+## Create ISO file
 
 Download a netinst ISO from debian.org
 
 ```sh
-make ISOBASEFILE=debian-13.3.0-amd64-netinst.iso
+make ISOLABEL=KIOSK-202604 ISOBASEFILE=debian-13.4.0-amd64-netinst.iso
+```
+
+## Prepare USB stick
+
+Plug your USB stick and identify its block device
+
+```console
+$ make DEVICE=/dev/sdc usb
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+sdc      8:32   1  3.7G  0 disk
+├─sdc1   8:33   1  753M  0 part
+└─sdc2   8:34   1  3.5M  0 part
+
+Are you sure you want to wipe /dev/sdc? [y/N] y
+188+1 records in
+188+1 records out
+789884928 bytes (790 MB, 753 MiB) copied, 74.0032 s, 10.7 MB/s
 ```
 
 ## Tests
