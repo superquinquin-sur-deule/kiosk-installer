@@ -13,4 +13,4 @@ in-target chmod 600 ${ANSIBLE_HOME}/.ssh/authorized_keys
 in-target chmod 440 /etc/sudoers.d/ansible
 
 in-target systemctl enable dbus
-in-target systemctl enable kiosk-deploy.service
+in-target systemctl enable kiosk-installer.service

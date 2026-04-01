@@ -1,12 +1,12 @@
 [Unit]
 Description=Initial Kiosk Setup with ansible-pull
-After=network-online.target dbus.socket systemd-resolved.service
+After=network-online.target dbus.socket
 Wants=network-online.target dbus.socket
 
 [Service]
 Type=oneshot
 User=ansible
-EnvironmentFile=/etc/default/kiosk-deploy
+EnvironmentFile=/etc/default/kiosk-installer
 ExecStart=/usr/bin/ansible-pull \
     --url ${ANSIBLE_URL} \
     --checkout ${ANSIBLE_BRANCH} \
