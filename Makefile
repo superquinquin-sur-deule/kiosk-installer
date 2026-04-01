@@ -1,4 +1,4 @@
-ISOBASEFILE  = debian-13.3.0-amd64-netinst.iso
+ISOBASEFILE  = debian-13.4.0-amd64-netinst.iso
 ISOPRESEED   = preseed-$(ISOBASEFILE)
 TESTVMDISK   = test-disk.qcow2
 INSTALLDIR   = installer
