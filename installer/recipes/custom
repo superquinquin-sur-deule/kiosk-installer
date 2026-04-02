@@ -1,0 +1,29 @@
+custom ::
+
+538 538 1075 free
+    $iflabel{ gpt }
+    $reusemethod{ }
+    method{ efi }
+    format{ } .
+
+500 500 500 ext4
+    $primary{ }
+    $bootable{ }
+    method{ format }
+    format{ }
+    use_filesystem{ }
+    filesystem{ ext4 }
+    mountpoint{ /boot }
+    options/noatime{ noatime } .
+
+4000 4000 4000 linux-swap
+    method{ swap }
+    format{ } .
+
+1000 10000 -1 ext4
+    method{ format }
+    format{ }
+    use_filesystem{ }
+    filesystem{ ext4 }
+    mountpoint{ / }
+    options/noatime{ noatime } .
