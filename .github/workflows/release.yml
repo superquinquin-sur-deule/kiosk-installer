@@ -18,12 +18,20 @@ jobs:
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install -y xorriso cpio
 
+      - name: Cache base ISO
+        id: cache-iso
+        uses: actions/cache@v4
+        with:
+          path: debian-13.4.0-amd64-netinst.iso
+          key: debian-13.4.0-amd64-netinst.iso
+
       - name: Download base ISO
+        if: steps.cache-iso.outputs.cache-hit != 'true'
         run: |
           wget -q https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-13.4.0-amd64-netinst.iso
 
       - name: Build preseeded ISO
-        run: make preseed-debian-13.4.0-amd64-netinst.iso
+        run: make VERSION=v${{ inputs.version }} preseed-debian-13.4.0-amd64-netinst.iso
 
       - name: Create tag and release
         env:
