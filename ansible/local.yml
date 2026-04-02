@@ -7,20 +7,32 @@
     ansible_python_interpreter: auto_silent
   tasks:
     - name: Set hostname from machine-id
-      hostname:
+      ansible.builtin.hostname:
         name: "kiosk-{{ ansible_machine_id[:6] }}"
 
     - name: "Synchronize /etc/hosts with new hostname"
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: /etc/hosts
         regexp: '^127\.0\.1\.1'
         line: "127.0.1.1\t{{ ansible_hostname }}"
         state: present
 
     - name: Deploy MOTD
-      template:
+      ansible.builtin.template:
         src: templates/motd.j2
         dest: /etc/motd
         owner: root
         group: root
         mode: "0644"
+
+    - name: Get /boot mount information
+      ansible.builtin.set_fact:
+        boot_mount: "{{ ansible_mounts | selectattr('mount', 'equalto', '/boot') | first }}"
+
+    - name: Ensure /boot is mounted read-only in fstab
+      ansible.builtin.mount:
+        src: "{{ boot_mount.device }}"
+        path: /boot
+        state: remounted
+        opts: ro,noatime,nodev,nosuid,noexec
+        fstype: "{{ boot_mount.fstype }}"
