@@ -50,7 +50,7 @@ test-boot: $(TESTVMDISK)
 	    -enable-kvm -cpu host -smp 4 -m 1G \
 	    -net nic,model=virtio \
 	    -net user,hostfwd=tcp::2222-:22 \
-	    -serial stdio \
+	    -serial stdio $(if $(OVMF),-bios $(OVMF) )\
 	    -cdrom $(ISOPRESEED) \
 	    -drive file=$(TESTVMDISK),format=qcow2,if=virtio,cache=unsafe \
 	    -virtfs local,path=ansible,mount_tag=ansible,readonly=on,security_model=none

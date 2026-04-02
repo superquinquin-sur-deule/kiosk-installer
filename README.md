@@ -31,7 +31,7 @@ Are you sure you want to wipe /dev/sdc? [y/N] y
 
 ### Booting
 
-Boot on a volatile 20GB-sized qcow file
+Legacy Boot on a volatile 20GB-sized qcow file
 
 - Console output redirected to `/dev/ttyS0` for debugging.
 - Host-to-guest SSH through `ssh -F ssh_config kiosk-dev`.
@@ -43,6 +43,13 @@ make test-boot
 
 # Force a fresh install from ISO
 make --always-make test-boot
+```
+
+UEFI boot requires OVMF library (depend on your workstation)
+
+```sh
+# Start with UEFI
+make OVMF=/usr/share/edk2/x64/OVMF.4m.fd test-boot
 ```
 
 ### Provisionning
