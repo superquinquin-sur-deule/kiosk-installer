@@ -3,7 +3,8 @@ ISOPRESEED   = preseed-$(ISOBASEFILE)
 ISOLABEL     = KIOSK
 TESTVMDISK   = test-disk.qcow2
 INSTALLDIR   = installer
-INSTALLFILES = $(shell find $(INSTALLDIR) -type f -not -name preseed.cfg)
+INSTALLFILES = $(shell find $(INSTALLDIR)/cdrom -type f)
+INITRDFILES  = $(shell find $(INSTALLDIR)/initrd -type f)
 
 $(ISOPRESEED): .xorrisorc
 	rm -f $(ISOPRESEED)
@@ -22,9 +23,10 @@ usb:
 initrd_original.gz: $(ISOBASEFILE)
 	osirrox -indev $< -extract /install.amd/initrd.gz $@
 
-initrd_patch.gz: $(INSTALLDIR)/preseed.cfg
-	cd $(INSTALLDIR) ;\
-	echo preseed.cfg | cpio -H newc -o | gzip -9 > ../$@
+initrd_patch.gz: $(INITRDFILES)
+	cd $(INSTALLDIR)/initrd && \
+	    printf '%s\n' $(patsubst $(INSTALLDIR)/initrd/%,%,$^) \
+	    | cpio -H newc -o | gzip -9 > $(CURDIR)/$@
 
 initrd_final.gz: initrd_original.gz initrd_patch.gz
 	cat $^ > $@
@@ -34,7 +36,7 @@ initrd_final.gz: initrd_original.gz initrd_patch.gz
 	@echo "-outdev $(ISOPRESEED)" >> $@
 	@echo "-map $< /install.amd/initrd.gz" >> $@
 	@$(foreach l, $(filter-out $<, $^), \
-	    echo "-map $(l) $(patsubst $(INSTALLDIR)/%,/%,$(l))" >> $@;)
+	    echo "-map $(l) $(patsubst $(INSTALLDIR)/cdrom/%,/%,$(l))" >> $@;)
 	@echo "-volid $(ISOLABEL)" >> $@
 	@echo "-boot_image any replay" >> $@
 	@echo "-compliance no_emul_toc" >> $@
