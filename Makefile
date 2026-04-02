@@ -31,7 +31,8 @@ initrd_patch.gz: $(INITRDFILES)
 initrd_final.gz: initrd_original.gz initrd_patch.gz
 	cat $^ > $@
 
-.xorrisorc: initrd_final.gz $(INSTALLFILES)
+include theme/Makefile
+.xorrisorc: initrd_final.gz $(INSTALLFILES) $(SPLASH)
 	@echo "-indev $(ISOBASEFILE)" > $@
 	@echo "-outdev $(ISOPRESEED)" >> $@
 	@echo "-map $< /install.amd/gtk/initrd.gz" >> $@

@@ -1,5 +1,5 @@
 title-text:  "Kiosk Installer"
-title-color: "#f6d443"
+title-color: "#4a3931"
 
 desktop-image: "splash.png"
 desktop-color: "#000000"

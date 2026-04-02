@@ -1,2 +1,13 @@
 Window.SetBackgroundTopColor(1, 1, 1);
 Window.SetBackgroundBottomColor(1, 1, 1);
+
+wallpaper_image = Image("splash.png");
+wallpaper_sprite = Sprite();
+
+screen_w = Window.GetWidth();
+screen_h = Window.GetHeight();
+image_w = wallpaper_image.GetWidth();
+image_h = wallpaper_image.GetHeight();
+
+wallpaper_sprite.SetImage(wallpaper_image);
+wallpaper_sprite.SetPosition((screen_w - image_w) / 2, (screen_h - image_h) / 2, -100);
