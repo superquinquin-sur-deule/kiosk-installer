@@ -16,3 +16,8 @@ in-target systemctl enable dbus
 in-target systemctl enable systemd-resolved systemd-networkd
 in-target systemctl enable kiosk-installer.service
 in-target apt-get purge -y ifupdown
+
+in-target plymouth-set-default-theme superquinquin
+
+in-target update-grub
+in-target update-initramfs -u
