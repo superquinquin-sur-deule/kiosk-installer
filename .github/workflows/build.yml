@@ -1,0 +1,30 @@
+name: Build ISO
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y xorriso cpio
+
+      - name: Download base ISO
+        run: |
+          wget -q https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-13.4.0-amd64-netinst.iso
+
+      - name: Build preseeded ISO
+        run: make preseed-debian-13.4.0-amd64-netinst.iso
+
+      - name: Upload ISO artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: kiosk-installer-iso
+          path: preseed-debian-13.4.0-amd64-netinst.iso
+          retention-days: 7
