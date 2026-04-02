@@ -21,7 +21,7 @@ usb:
 .INTERMEDIATE: initrd_original.gz initrd_patch.gz initrd_final.gz .xorrisorc
 
 initrd_original.gz: $(ISOBASEFILE)
-	osirrox -indev $< -extract /install.amd/initrd.gz $@
+	osirrox -indev $< -extract /install.amd/gtk/initrd.gz $@
 
 initrd_patch.gz: $(INITRDFILES)
 	cd $(INSTALLDIR)/initrd && \
@@ -34,7 +34,7 @@ initrd_final.gz: initrd_original.gz initrd_patch.gz
 .xorrisorc: initrd_final.gz $(INSTALLFILES)
 	@echo "-indev $(ISOBASEFILE)" > $@
 	@echo "-outdev $(ISOPRESEED)" >> $@
-	@echo "-map $< /install.amd/initrd.gz" >> $@
+	@echo "-map $< /install.amd/gtk/initrd.gz" >> $@
 	@$(foreach l, $(filter-out $<, $^), \
 	    echo "-map $(l) $(patsubst $(INSTALLDIR)/cdrom/%,/%,$(l))" >> $@;)
 	@echo "-volid $(ISOLABEL)" >> $@
