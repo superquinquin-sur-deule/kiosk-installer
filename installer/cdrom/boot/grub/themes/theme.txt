@@ -1,0 +1,21 @@
+title-text:  "Kiosk Installer"
+title-color: "#f6d443"
+
+desktop-image: "splash.png"
+desktop-color: "#000000"
+
++ boot_menu {
+    top    = 20%
+    left   = 20%
+    width  = 60%
+    height = 30%
+
+    item_color           = "#ffffff"
+    selected_item_color  = "#4a3931"
+    selected_item_pixmap_style = "bg/select_*.png"
+
+    item_height         = 24
+    item_padding        = 1
+    item_spacing        = 1
+    scrollbar           = false
+}
