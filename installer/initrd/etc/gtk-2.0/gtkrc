@@ -1,0 +1,35 @@
+# Palette SuperQuinquin :
+# Jaune soleil : #f6d443
+# Brun logo    : #4a3931
+# Blanc cassé  : #f2f2f2
+
+style "kiosk-default" {
+    bg[NORMAL]      = "#f2f2f2"
+    bg[ACTIVE]      = "#f6d443"
+    bg[PRELIGHT]    = "#edc621"
+    bg[SELECTED]    = "#4a3931"
+    bg[INSENSITIVE] = "#e0e0e0"
+
+    fg[NORMAL]      = "#4a3931"
+    fg[ACTIVE]      = "#000000"
+    fg[PRELIGHT]    = "#000000"
+    fg[SELECTED]    = "#ffffff"
+    fg[INSENSITIVE] = "#999999"
+
+    base[NORMAL]    = "#ffffff"
+    base[SELECTED]  = "#4a3931"
+    base[ACTIVE]    = "#f6d443"
+
+    text[NORMAL]    = "#4a3931"
+    text[SELECTED]  = "#ffffff"
+    text[ACTIVE]    = "#4a3931"
+}
+
+widget_class "*" style "kiosk-default"
+
+style "kiosk-button" {
+    bg[NORMAL]   = "#f6d443"
+    fg[NORMAL]   = "#4a3931"
+}
+
+widget_class "*GtkButton*" style "kiosk-button"
