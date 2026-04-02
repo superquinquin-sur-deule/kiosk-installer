@@ -67,3 +67,4 @@ make test-ansible
 - Modifying an installation ISO image to preseed the installer from its initrd <https://wiki.debian.org/DebianInstaller/Preseed/EditIso>
 - Automatiser l’installation de Debian avec un fichier preseed.cfg <https://blog.lof.ovh/fr/posts/tutoriels/automatisation-installation-debian-avec-preseed/>
 - QEMU 9p setup <https://wiki.qemu.org/Documentation/9psetup>
+- Syslinux Comboot/menu.c32 <https://wiki.syslinux.org/wiki/index.php?title=Comboot/menu.c32>
