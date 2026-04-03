@@ -1,0 +1,8 @@
+---
+- name: Ensure /boot is mounted read-only in fstab
+  ansible.builtin.mount:
+    src: "{{ boot_mount.device }}"
+    path: /boot
+    state: remounted
+    opts: ro,noatime,nodev,nosuid,noexec
+    fstype: "{{ boot_mount.fstype }}"
