@@ -1,3 +1,24 @@
 ---
-- name: update-grub
+- name: "Remount /boot read-write"
+  ansible.builtin.mount:
+    path: /boot
+    state: remounted
+    opts: rw
+  listen: update-grub
+
+- name: "Run update-grub"
   ansible.builtin.shell: update-grub
+  listen: update-grub
+
+- name: "Remount /boot read-only"
+  ansible.builtin.mount:
+    path: /boot
+    state: remounted
+    opts: ro
+  listen: update-grub
+
+- name: Restart systemd-journald
+  ansible.builtin.systemd_service:
+    name: systemd-journald
+    state: restarted
+  listen: restart-journald

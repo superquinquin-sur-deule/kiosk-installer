@@ -12,7 +12,7 @@
   ansible.builtin.mount:
     src: tmpfs
     path: /var/log
-    state: mounted
+    state: present
     opts: "defaults,noatime,nodev,nosuid,noexec,mode=0755,size=200M"
     fstype: tmpfs
 
@@ -23,7 +23,10 @@
     group: root
     mode: "0644"
     content: |
-      d /var/log/journal 0755 root systemd-journal
+      d /var/log/journal 2755 root systemd-journal -
+      d /var/log/journal/{{ ansible_machine_id }} 2755 root systemd-journal -
       d /var/log/apt 0755 root root
       d /var/log/dbus 0755 messagebus messagebus
-  notify: Create tmpfiles
+      d /var/log/runit 0755 root root -
+      d /var/log/runit/ssh 0755 root root -
+  notify: create-tmpfiles

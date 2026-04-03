@@ -10,7 +10,7 @@
     content: |
       # Apply BFQ I/O scheduler to {{ block_device }} device
       SUBSYSTEM=="block", KERNEL="{{ block_device }}", ACTION=="add", RUN+="/bin/sh -c 'echo bfq > /sys/block/{{ block_device }}/queue/scheduler'"
-  notify: reload udev rules
+  notify: reload-udev-rules
 
 - name: Configure sysctl settings
   ansible.builtin.copy:
@@ -23,4 +23,4 @@
       {{ key }} = {{ value }}
       {% endfor %}
   loop: "{{ sysctl_settings }}"
-  notify: sysctl changed
+  notify: apply-sysctl
