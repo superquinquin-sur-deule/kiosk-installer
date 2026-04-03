@@ -31,8 +31,6 @@ installer/%/splash.png: $(THEMES)
 theme/select.png:
 	magick -size 1x1 xc:"#f6d443" PNG24:$@
 
-$(GRUBTHEMEBG):
-	@mkdir -p $@
-
-$(GRUBTHEMEBG)/select_%.png: theme/select.png $(GRUBTHEMEBG)
+$(GRUBTHEMEBG)/select_%.png: theme/select.png
+	@mkdir -p $(dir $@)
 	cp $< $@
