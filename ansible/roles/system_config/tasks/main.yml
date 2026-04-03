@@ -34,3 +34,14 @@
     src: "20-superquinquin.sh"
     dest: "/etc/update-motd.d/20-superquinquin"
     mode: "0755"
+
+- name: Configure journald storage
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/journald.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: "^#?Storage=", line: "Storage=persistent" }
+    - { regexp: "^#?SystemMaxUse=", line: "SystemMaxUse=50M" }
+    - { regexp: "^#?MaxRetentionSec=", line: "MaxRetentionSec=1day" }
+  notify: restart-journald

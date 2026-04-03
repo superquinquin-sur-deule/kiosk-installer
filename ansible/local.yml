@@ -12,6 +12,6 @@
         boot_mount: "{{ ansible_mounts | selectattr('mount', 'equalto', '/boot') | first }}"
 
   roles:
-    - system_config
     - system_filesystem
+    - system_config
     - system_tuning
