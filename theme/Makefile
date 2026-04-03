@@ -9,12 +9,12 @@ SVGURL = https://www.superquinquin.fr/wp-content/themes/superquinquin/img/superq
 .INTERMEDIATE: $(SPLASH)
 
 theme/splash-1024x768.png:
-	magick -size 1024x768 xc:white \( $(SVGURL) -resize 320x320 \) \
-        -gravity South -geometry +20+50 -composite PNG24:$@
+	magick -size 1024x768 xc:white \( $(SVGURL) -resize 320x320 -trim \) \
+        -gravity South -geometry +0+50 -composite PNG24:$@
 
 theme/splash-640x480.png:
-	magick -size 640x480 xc:white \( $(SVGURL) -resize 200x200 \) \
-        -gravity South -geometry +20+40 -composite PNG8:$@
+	magick -size 640x480 xc:white \( $(SVGURL) -resize 200x200 -trim \) \
+        -gravity South -geometry +0+40 -composite PNG8:$@
 
 installer/%/splash.png: $(THEMES)
 	$(if $(filter $@,$(640_480)),cp theme/splash-640x480.png $@)
