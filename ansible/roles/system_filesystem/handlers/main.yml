@@ -1,3 +1,11 @@
 ---
 - name: Create tmpfiles
   ansible.builtin.shell: systemd-tmpfiles --create
+
+- name: remount-boot
+  ansible.builtin.mount:
+    src: "{{ boot_mount.device }}"
+    path: /boot
+    state: remounted
+    opts: ro,noatime,nodev,nosuid,noexec
+    fstype: "{{ boot_mount.fstype }}"

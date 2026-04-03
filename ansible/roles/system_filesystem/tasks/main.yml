@@ -3,9 +3,10 @@
   ansible.builtin.mount:
     src: "{{ boot_mount.device }}"
     path: /boot
-    state: remounted
+    state: present
     opts: ro,noatime,nodev,nosuid,noexec
     fstype: "{{ boot_mount.fstype }}"
+  notify: remount-boot
 
 - name: Ensure /var/log is mounted as tmpfs
   ansible.builtin.mount:
