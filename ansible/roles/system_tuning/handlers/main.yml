@@ -1,0 +1,7 @@
+---
+- name: reload udev rules
+  ansible.builtin.shell: udevadm control --reload-rules && udevadm trigger --subsystem-match=block
+
+- name: Apply sysctl configuration
+  ansible.builtin.shell: sysctl -p /etc/sysctl.d/*.conf
+  listen: sysctl changed

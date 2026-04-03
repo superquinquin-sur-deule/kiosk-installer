@@ -1,0 +1,26 @@
+---
+- name: Deploy udev rule for BFQ scheduler
+  vars:
+    block_device: "{{ boot_mount.device | regex_replace('/dev/', '') | regex_replace('[0-9]+$', '') }}"
+  ansible.builtin.copy:
+    dest: /etc/udev/rules.d/99-bfq-scheduler.rules
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      # Apply BFQ I/O scheduler to {{ block_device }} device
+      SUBSYSTEM=="block", KERNEL="{{ block_device }}", ACTION=="add", RUN+="/bin/sh -c 'echo bfq > /sys/block/{{ block_device }}/queue/scheduler'"
+  notify: reload udev rules
+
+- name: Configure sysctl settings
+  ansible.builtin.copy:
+    dest: "/etc/sysctl.d/{{ item.name }}"
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      {% for key, value in item.parameters.items() %}
+      {{ key }} = {{ value }}
+      {% endfor %}
+  loop: "{{ sysctl_settings }}"
+  notify: sysctl changed
