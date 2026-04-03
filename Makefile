@@ -60,5 +60,6 @@ test-boot: $(TESTVMDISK)
 test-ansible: PLAYBOOK = kiosk-installer/ansible/local.yml
 test-ansible:
 	@ssh -F .ssh_config kiosk-dev \
-	    "sudo mount -t 9p -o trans=virtio ansible $(dir $(PLAYBOOK)) 2>/dev/null || true && \
+	    "mkdir -p $(dir $(PLAYBOOK)) && \
+	    sudo mount -t 9p -o trans=virtio ansible $(dir $(PLAYBOOK)) 2>/dev/null || true && \
 	    ansible-playbook $(PLAYBOOK) -i localhost,"
