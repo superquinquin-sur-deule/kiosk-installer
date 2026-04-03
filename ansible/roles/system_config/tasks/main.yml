@@ -1,7 +1,7 @@
 ---
 - name: Set hostname from machine-id
   ansible.builtin.hostname:
-    name: "kiosk-{{ ansible_machine_id[:6] }}"
+    name: "kiosk-{{ ansible_default_ipv4.address.split('.')[-1] }}"
 
 - name: Synchronize /etc/hosts with new hostname
   ansible.builtin.lineinfile:
