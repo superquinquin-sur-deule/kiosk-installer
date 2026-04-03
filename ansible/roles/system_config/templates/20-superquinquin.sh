@@ -1,3 +1,5 @@
+#!/bin/sh
+cat << EOF
 ┏━┓╻ ╻┏━┓┏━╸┏━┓┏━┓╻ ╻╻┏┓╻┏━┓╻ ╻╻┏┓╻
 ┗━┓┃ ┃┣━┛┣╸ ┣┳┛┃┓┃┃ ┃┃┃┗┫┃┓┃┃ ┃┃┃┗┫
 ┗━┛┗━┛╹  ┗━╸╹┗╸┗┻┛┗━┛╹╹ ╹┗┻┛┗━┛╹╹ ╹
@@ -5,8 +7,10 @@
 ┗━┓┃ ┃┣┳┛    ┃┃┣╸ ┃ ┃┃  ┣╸
 ┗━┛┗━┛╹┗╸   ╺┻┛┗━╸┗━┛┗━╸┗━╸
 
-  Poste  : {{ ansible_hostname }}
-  IP     : {{ ansible_default_ipv4.address | default('non connecté') }}
-  OS     : {{ ansible_distribution }} {{ ansible_distribution_version }}
+Borne  : $(hostname --short)
+IP     : $(hostname -I | cut -d" " -f1)
+OS     : $(uname -v | sed 's/#1 SMP PREEMPT_DYNAMIC //')
 
-  Gestion : https://github.com/superquinquin-sur-deule/kiosk-installer.git ({{ ansible_date_time.date }})
+Gestion : https://github.com/superquinquin-sur-deule/kiosk-installer.git
+Version : {{ ansible_date_time.date }}
+EOF
