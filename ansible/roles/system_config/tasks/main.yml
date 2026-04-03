@@ -18,10 +18,19 @@
     state: present
   notify: update-grub
 
-- name: Deploy MOTD
+- name: "Deactivate static motd"
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/sshd
+    regexp: '^session\s+optional\s+pam_motd\.so\s+noupdate'
+    state: absent
+
+- name: Deactivate dynamic uname motd
+  ansible.builtin.file:
+    path: /etc/update-motd.d/10-uname
+    mode: "0444"
+
+- name: Deploy dynamic kiosk motd
   ansible.builtin.template:
-    src: motd.j2
-    dest: /etc/motd
-    owner: root
-    group: root
-    mode: "0644"
+    src: "20-superquinquin.sh"
+    dest: "/etc/update-motd.d/20-superquinquin"
+    mode: "0755"
