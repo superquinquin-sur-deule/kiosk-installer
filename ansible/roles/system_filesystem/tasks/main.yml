@@ -6,3 +6,23 @@
     state: remounted
     opts: ro,noatime,nodev,nosuid,noexec
     fstype: "{{ boot_mount.fstype }}"
+
+- name: Ensure /var/log is mounted as tmpfs
+  ansible.builtin.mount:
+    src: tmpfs
+    path: /var/log
+    state: mounted
+    opts: "defaults,noatime,nodev,nosuid,noexec,mode=0755,size=200M"
+    fstype: tmpfs
+
+- name: Create tmpfiles rule for critical logs
+  ansible.builtin.copy:
+    dest: /etc/tmpfiles.d/kiosk-logs.conf
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      d /var/log/journal 0755 root systemd-journal
+      d /var/log/apt 0755 root root
+      d /var/log/dbus 0755 messagebus messagebus
+  notify: Create tmpfiles
