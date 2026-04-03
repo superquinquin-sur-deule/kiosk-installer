@@ -10,6 +10,14 @@
     line: "127.0.1.1\t{{ ansible_hostname }}"
     state: present
 
+- name: Force a silent Grub boot
+  ansible.builtin.lineinfile:
+    path: /etc/default/grub
+    regexp: "^GRUB_CMDLINE_LINUX_DEFAULT"
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet splash loglevel=3 rd.systemd.show_status=false rd.udev.log_priority=3 vt.global_cursor_default=0"'
+    state: present
+  notify: update-grub
+
 - name: Deploy MOTD
   ansible.builtin.template:
     src: motd.j2
