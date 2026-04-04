@@ -1,0 +1,45 @@
+{
+  "policies": {
+    "OfferToSaveLogins": false,
+    "PasswordManagerEnabled": false,
+    "OverridePostUpdatePage": "",
+    "DisplayBookmarksToolbar": "never",
+    "DisplayMenuBar": "never",
+    "ShowHomeButton": false,
+    "DisableFirefoxAccounts": true,
+    "DisableFirefoxStudies": true,
+    "DisableForgetButton": true,
+    "DisableProfileImport": true,
+    "DisableAppUpdate": true,
+    "DontCheckDefaultBrowser": true,
+    "NoDefaultBookmarks": true,
+    "OverrideFirstRunPage": "",
+    "PrivateBrowsingModeAvailability": 1,
+    "DisableSafeMode": true,
+    "DisableDeveloperTools": true,
+    "PrintingEnabled": false,
+    "SearchBar": "unified",
+    "SearchSuggestEnabled": false,
+    "BlockAboutConfig": true,
+    "BlockAboutAddons": true,
+    "BlockAboutProfiles": true,
+    "BlockAboutSupport": true,
+    "SanitizeOnShutdown": {
+      "History": true,
+      "FormData": true,
+      "Downloads": true,
+      "Sessions": true
+    },
+    "Permissions": {
+      "Camera": { "BlockNewRequests": true },
+      "Microphone": { "BlockNewRequests": true },
+      "Location": { "BlockNewRequests": true }
+    },
+    "UserMessaging": {
+      "ExtensionRecommendations": false,
+      "FeatureRecommendations": false,
+      "SkipOnboarding": true,
+      "MoreFromMozilla": false
+    }
+  }
+}

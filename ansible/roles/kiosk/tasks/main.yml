@@ -1,0 +1,41 @@
+---
+- name: Create kiosk user
+  ansible.builtin.user:
+    name: kiosk
+    groups: "video,input,render"
+    shell: /bin/bash
+    create_home: true
+
+- name: Install graphical packages
+  ansible.builtin.apt:
+    name:
+      - cage
+      - firefox-esr
+    state: present
+
+- name: Configure pam.d/kiosk
+  ansible.builtin.copy:
+    src: "pam.d-kiosk"
+    dest: /etc/pam.d/kiosk
+
+- name: Deploy cage service
+  ansible.builtin.template:
+    src: "cage.service"
+    dest: /etc/systemd/system/cage@.service
+
+- name: Enable cage service on tty1
+  ansible.builtin.systemd_service:
+    name: cage@tty1.service
+    enabled: true
+    daemon_reload: true
+
+- name: Set default target to graphical
+  ansible.builtin.file:
+    src: /usr/lib/systemd/system/graphical.target
+    dest: /etc/systemd/system/default.target
+    state: link
+
+- name: Configure Firefox
+  ansible.builtin.copy:
+    src: "firefox-policies.json"
+    dest: /usr/lib/firefox-esr/distribution/policies.json
