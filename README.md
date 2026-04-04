@@ -60,6 +60,9 @@ editing of the playbook on the host and immediate execution on the guest.
 ```sh
 # Run the local-only playbook through SSH
 make test-ansible
+
+# Run a subset by using ansible tags
+make TAG=kiosk test-ansible
 ```
 
 ## References
@@ -68,3 +71,4 @@ make test-ansible
 - Automatiser l’installation de Debian avec un fichier preseed.cfg <https://blog.lof.ovh/fr/posts/tutoriels/automatisation-installation-debian-avec-preseed/>
 - QEMU 9p setup <https://wiki.qemu.org/Documentation/9psetup>
 - Syslinux Comboot/menu.c32 <https://wiki.syslinux.org/wiki/index.php?title=Comboot/menu.c32>
+- Starting Cage on boot with systemd https://github.com/cage-kiosk/cage/wiki/Starting-Cage-on-boot-with-systemd

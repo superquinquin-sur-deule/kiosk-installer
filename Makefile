@@ -62,4 +62,4 @@ test-ansible:
 	@ssh -F .ssh_config kiosk-dev \
 	    "mkdir -p $(dir $(PLAYBOOK)) && \
 	    sudo mount -t 9p -o trans=virtio ansible $(dir $(PLAYBOOK)) 2>/dev/null || true && \
-	    ansible-playbook $(PLAYBOOK) -i localhost,"
+	    ansible-playbook $(PLAYBOOK) -i localhost, $(if $(TAG),--tags $(TAG))"

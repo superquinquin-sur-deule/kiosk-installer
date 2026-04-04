@@ -7,4 +7,5 @@
     ansible_python_interpreter: auto_silent
 
   roles:
-    - system
+    - { role: system, tags: [system] }
+    - { role: kiosk, tags: [apps, kiosk] }
