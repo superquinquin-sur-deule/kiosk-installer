@@ -28,7 +28,9 @@
       d /var/log/runit 0755 root root -
       d /var/log/runit/ssh 0755 root root -
       f /var/log/lastlog 0664 root utmp -
-  notify: create-tmpfiles
+  notify:
+    - create-tmpfiles
+    - restart-journald
 
 - name: Configure journald storage
   ansible.builtin.lineinfile:
