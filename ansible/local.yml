@@ -6,12 +6,5 @@
   vars:
     ansible_python_interpreter: auto_silent
 
-  pre_tasks:
-    - name: Get /boot mount information
-      ansible.builtin.set_fact:
-        boot_mount: "{{ ansible_mounts | selectattr('mount', 'equalto', '/boot') | first }}"
-
   roles:
-    - system_filesystem
-    - system_config
-    - system_tuning
+    - system

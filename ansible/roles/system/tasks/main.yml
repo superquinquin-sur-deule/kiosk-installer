@@ -1,0 +1,102 @@
+---
+- name: Ensure /var/log is mounted as tmpfs
+  ansible.builtin.mount:
+    src: tmpfs
+    path: /var/log
+    state: mounted
+    opts: "defaults,noatime,nodev,nosuid,noexec,mode=0755,size=200M"
+    fstype: tmpfs
+
+- name: Deploy udev scheduler rules
+  ansible.builtin.copy:
+    dest: /etc/udev/rules.d/60-scheduler.rules
+    mode: "0644"
+    content: |
+      ACTION=="add|change", SUBSYSTEM=="block", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"
+      ACTION=="add|change", SUBSYSTEM=="block", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="none"
+  notify: reload-udev-rules
+
+- name: Create tmpfiles rule for critical logs
+  ansible.builtin.copy:
+    dest: /etc/tmpfiles.d/kiosk-logs.conf
+    mode: "0644"
+    content: |
+      d /var/log/journal 2755 root systemd-journal -
+      d /var/log/journal/{{ ansible_machine_id }} 2755 root systemd-journal -
+      d /var/log/apt 0755 root root
+      d /var/log/dbus 0755 messagebus messagebus
+      d /var/log/runit 0755 root root -
+      d /var/log/runit/ssh 0755 root root -
+      f /var/log/lastlog 0664 root utmp -
+  notify: create-tmpfiles
+
+- name: Configure journald storage
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/journald.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: "^#?Storage=", line: "Storage=persistent" }
+    - { regexp: "^#?SystemMaxUse=", line: "SystemMaxUse=50M" }
+    - { regexp: "^#?MaxRetentionSec=", line: "MaxRetentionSec=1day" }
+  notify: restart-journald
+
+- name: Force a silent Grub boot
+  ansible.builtin.lineinfile:
+    path: /etc/default/grub
+    regexp: "^GRUB_CMDLINE_LINUX_DEFAULT"
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet splash loglevel=3 rd.systemd.show_status=false rd.udev.log_priority=3 vt.global_cursor_default=0"'
+    state: present
+  notify: update-grub
+
+- name: Get /boot mount information
+  ansible.builtin.set_fact:
+    boot_mount: "{{ ansible_mounts | selectattr('mount', 'equalto', '/boot') | first }}"
+
+- name: Ensure /boot is mounted read-only in fstab
+  ansible.builtin.mount:
+    src: "{{ boot_mount.device }}"
+    path: /boot
+    state: present
+    opts: ro,noatime,nodev,nosuid,noexec
+    fstype: "{{ boot_mount.fstype }}"
+  notify: remount-boot
+
+- name: Configure sysctl settings
+  ansible.builtin.copy:
+    dest: "/etc/sysctl.d/{{ item.name }}"
+    mode: "0644"
+    content: |
+      {% for key, value in item.parameters.items() %}
+      {{ key }} = {{ value }}
+      {% endfor %}
+  loop: "{{ sysctl_settings }}"
+  notify: apply-sysctl
+
+- name: Set hostname from machine-id
+  ansible.builtin.hostname:
+    name: "kiosk-{{ ansible_default_ipv4.address.split('.')[-1] }}"
+
+- name: Synchronize /etc/hosts with new hostname
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    regexp: '^127\.0\.1\.1'
+    line: "127.0.1.1\t{{ ansible_hostname }}"
+    state: present
+
+- name: "Deactivate static motd"
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/sshd
+    regexp: '^session\s+optional\s+pam_motd\.so\s+noupdate'
+    state: absent
+
+- name: Deactivate dynamic uname motd
+  ansible.builtin.file:
+    path: /etc/update-motd.d/10-uname
+    mode: "0444"
+
+- name: Deploy dynamic kiosk motd
+  ansible.builtin.template:
+    src: "20-superquinquin.sh"
+    dest: "/etc/update-motd.d/20-superquinquin"
+    mode: "0755"
