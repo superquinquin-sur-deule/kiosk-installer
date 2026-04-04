@@ -73,6 +73,14 @@
   loop: "{{ sysctl_settings }}"
   notify: apply-sysctl
 
+- name: Disable core dumps with limits.d
+  ansible.builtin.copy:
+    dest: /etc/security/limits.d/99-disable-core-dumps.conf
+    content: |
+      * soft core 0
+      * hard core 0
+    mode: "0644"
+
 - name: Set hostname from machine-id
   ansible.builtin.hostname:
     name: "kiosk-{{ ansible_default_ipv4.address.split('.')[-1] }}"
