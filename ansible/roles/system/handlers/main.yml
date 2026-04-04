@@ -1,0 +1,33 @@
+---
+- name: Reload udev rules
+  ansible.builtin.shell: |
+    udevadm control --reload-rules && \
+    udevadm trigger --subsystem-match=block
+  listen: reload-udev-rules
+
+- name: Create tmpfiles
+  ansible.builtin.shell: systemd-tmpfiles --create
+  listen: create-tmpfiles
+
+- name: Restart systemd-journald
+  ansible.builtin.systemd_service:
+    name: systemd-journald
+    state: restarted
+  listen: restart-journald
+
+- name: "Run update-grub"
+  ansible.builtin.shell: update-grub
+  listen: update-grub
+
+- name: Remount /boot read-only
+  ansible.builtin.mount:
+    src: "{{ boot_mount.device }}"
+    path: /boot
+    state: remounted
+    opts: ro,noatime,nodev,nosuid,noexec
+    fstype: "{{ boot_mount.fstype }}"
+  listen: remount-boot
+
+- name: Apply sysctl configuration
+  ansible.builtin.shell: sysctl -p /etc/sysctl.d/*.conf
+  listen: apply-sysctl
