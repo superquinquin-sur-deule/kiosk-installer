@@ -1,13 +1,31 @@
 Window.SetBackgroundTopColor(1, 1, 1);
 Window.SetBackgroundBottomColor(1, 1, 1);
 
-wallpaper_image = Image("splash.png");
-wallpaper_sprite = Sprite();
-
 screen_w = Window.GetWidth();
 screen_h = Window.GetHeight();
+
+// --- Wallpaper Initialization ---
+wallpaper_sprite = Sprite();
+wallpaper_image = Image("splash.png");
+
 image_w = wallpaper_image.GetWidth();
 image_h = wallpaper_image.GetHeight();
 
 wallpaper_sprite.SetImage(wallpaper_image);
-wallpaper_sprite.SetPosition((screen_w - image_w) / 2, (screen_h - image_h) / 2, -100);
+wallpaper_sprite.SetX((screen_w - image_w) / 2);
+wallpaper_sprite.SetY((screen_h - image_h) / 2);
+wallpaper_sprite.SetZ(-100);
+
+// --- Text Area Configuration ---
+message_sprite = Sprite();
+
+fun message_callback (text) {
+    message_image = Image.Text(text, 0.29, 0.22, 0.19, 1, "DejaVu Mono 12"); // #4a3931
+
+    message_sprite.SetImage(message_image);
+    message_sprite.SetX(screen_w / 2 - (message_image.GetWidth() / 2));
+    message_sprite.SetY(screen_h * 0.4);
+    message_sprite.SetZ(10000);
+}
+
+Plymouth.SetMessageFunction(message_callback);
