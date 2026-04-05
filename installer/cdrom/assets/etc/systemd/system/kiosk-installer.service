@@ -1,5 +1,6 @@
 [Unit]
 Description=Initial Kiosk Setup with ansible-pull
+Documentation=https://github.com/superquinquin-sur-deule/kiosk-installer
 After=network-online.target nss-lookup.target
 Requires=network-online.target
 
