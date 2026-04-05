@@ -1,7 +1,6 @@
-GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash vt.handoff=1 systemd.restore_state=0 loglevel=3 rd.systemd.show_status=false rd.udev.log_priority=3 vt.global_cursor_default=0"
 GRUB_GFXMODE=1024x768x32
 GRUB_GFXPAYLOAD_LINUX=keep
 GRUB_RECORDFAIL_TIMEOUT=0
-GRUB_TERMINAL_OUTPUT=console
 GRUB_TIMEOUT=0
 GRUB_TIMEOUT_STYLE=hidden
