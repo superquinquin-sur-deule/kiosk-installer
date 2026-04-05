@@ -18,6 +18,7 @@ in-target systemctl enable kiosk-installer.service
 in-target apt-get purge -y ifupdown
 
 in-target plymouth-set-default-theme superquinquin
+in-target systemctl mask getty@tty1.service
 
 in-target update-grub
 in-target update-initramfs -u
