@@ -8,6 +8,7 @@ Before=graphical.target
 [Service]
 Type=oneshot
 User=ansible
+ExecStartPre=+/usr/bin/plymouth display-message --text "Start kiosk-installer"
 EnvironmentFile=/etc/default/kiosk-installer
 ExecStart=/usr/bin/ansible-pull \
     --url ${ANSIBLE_URL} \
