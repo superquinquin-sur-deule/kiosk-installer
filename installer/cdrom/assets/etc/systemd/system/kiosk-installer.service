@@ -3,6 +3,7 @@ Description=Initial Kiosk Setup with ansible-pull
 Documentation=https://github.com/superquinquin-sur-deule/kiosk-installer
 After=network-online.target nss-lookup.target
 Requires=network-online.target
+Before=graphical.target
 
 [Service]
 Type=oneshot
@@ -14,6 +15,13 @@ ExecStart=/usr/bin/ansible-pull \
     --directory ${ANSIBLE_DIRECTORY} \
     --inventory localhost, \
     ansible/local.yml
+
+# On first boot, graphical.target is queued before ansible has run: new Wants
+# created by daemon_reload are not retroactively injected into that job.
+# Re-issuing a non-blocking start on graphical.target after ansible exits forces
+# systemd to build a fresh job incorporating the updated dependency graph.
+# On subsequent boots the request merges with the existing job — no-op.
+ExecStartPost=+/bin/systemctl start --no-block graphical.target
 
 Restart=on-failure
 RestartSec=10

@@ -27,6 +27,22 @@ Are you sure you want to wipe /dev/sdc? [y/N] y
 789884928 bytes (790 MB, 753 MiB) copied, 74.0032 s, 10.7 MB/s
 ```
 
+## Boot sequence
+
+```
+network-online.target
+  └─ kiosk-installer.service                <runs ansible-pull>
+       └─ plymouth-quit.service             <signals Plymouth to quit>
+            └─ plymouth-quit-wait.service   <Plymouth gone>
+                 └─ graphical.target        <re-evaluated>
+                      └─ cage@tty1.service  <starts>
+```
+
+Plymouth stays on screen while the playbook runs. Once ansible exits, Plymouth
+quits and the kiosk session opens on tty1. On first boot the playbook installs
+packages and configures the system. On subsequent boots it applies pending
+updates before handing off to Cage.
+
 ## Tests
 
 ### Booting
