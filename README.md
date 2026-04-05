@@ -81,6 +81,25 @@ make test-ansible
 make TAG=kiosk test-ansible
 ```
 
+Or run a local git daemon to validate the sequence boot with your current work
+
+```sh
+# Open a side terminal for daemonizing git
+git commit -a -m "wip: feat: -"
+git daemon --reuseaddr --base-path=. --export-all --verbose --enable=receive-pack
+
+# Edit kiosk-installer env variables
+# installer/cdrom/assets/etc/default/kiosk-installer
+ANSIBLE_URL=git://10.0.2.2/
+ANSIBLE_BRANCH=florent/ansible
+
+# Run a fresh install
+make test-boot
+
+# Follow journalctl
+ssh -F .ssh_config kiosk-dev sudo journalctl -f
+```
+
 ## References
 
 - Modifying an installation ISO image to preseed the installer from its initrd <https://wiki.debian.org/DebianInstaller/Preseed/EditIso>
