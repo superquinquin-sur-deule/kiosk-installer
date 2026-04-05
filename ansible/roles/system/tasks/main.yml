@@ -43,6 +43,9 @@
     - { regexp: "^#?MaxRetentionSec=", line: "MaxRetentionSec=1day" }
   notify: restart-journald
 
+- name: Trigger critical handlers now
+  meta: flush_handlers
+
 - name: Get /boot mount information
   ansible.builtin.set_fact:
     boot_mount: "{{ ansible_mounts | selectattr('mount', 'equalto', '/boot') | first }}"
