@@ -26,4 +26,4 @@ PAMName=kiosk
 
 [Install]
 WantedBy=graphical.target
-DefaultInstance=tty7
+DefaultInstance=tty1

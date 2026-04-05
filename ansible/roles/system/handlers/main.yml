@@ -15,10 +15,6 @@
     state: restarted
   listen: restart-journald
 
-- name: "Run update-grub"
-  ansible.builtin.shell: update-grub
-  listen: update-grub
-
 - name: Remount /boot read-only
   ansible.builtin.mount:
     src: "{{ boot_mount.device }}"
