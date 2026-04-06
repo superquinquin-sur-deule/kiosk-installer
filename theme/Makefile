@@ -18,11 +18,11 @@ GRUBMAPFILES = $(GRUBMAP:%=$(GRUBTHEMEBG)/select_%.png)
 
 theme/splash-1024x768.png:
 	magick -size 1024x768 xc:white \( $(SVGURL) -resize 320x320 -trim \) \
-        -gravity South -geometry +0+50 -composite PNG24:$@
+        -gravity Center -composite PNG24:$@
 
 theme/splash-640x480.png:
 	magick -size 640x480 xc:white \( $(SVGURL) -resize 200x200 -trim \) \
-        -gravity South -geometry +0+40 -composite PNG8:$@
+        -gravity Center -composite PNG8:$@
 
 installer/%/splash.png: $(THEMES)
 	$(if $(filter $@,$(640_480)),cp theme/splash-640x480.png $@)
