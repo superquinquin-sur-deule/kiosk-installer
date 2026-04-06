@@ -44,6 +44,14 @@ class CallbackModule(CallbackBase):
             pass
 
     # ------------------------------------------------------------------
+    # Message formatting
+    # ------------------------------------------------------------------
+
+    def _strip_role_prefix(self, task_name):
+        """'system : Install X'  ->  'Install X'"""
+        return task_name.split(" : ", 1)[-1]
+
+    # ------------------------------------------------------------------
     # Ansible callback hooks
     # ------------------------------------------------------------------
 
@@ -53,4 +61,5 @@ class CallbackModule(CallbackBase):
         if name.startswith("Gathering Facts"):
             return
 
-        self._send_label(name)
+        label = self._strip_role_prefix(name)
+        self._send_label(label)
