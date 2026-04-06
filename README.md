@@ -106,4 +106,5 @@ ssh -F .ssh_config kiosk-dev sudo journalctl -f
 - Automatiser l’installation de Debian avec un fichier preseed.cfg <https://blog.lof.ovh/fr/posts/tutoriels/automatisation-installation-debian-avec-preseed/>
 - QEMU 9p setup <https://wiki.qemu.org/Documentation/9psetup>
 - Syslinux Comboot/menu.c32 <https://wiki.syslinux.org/wiki/index.php?title=Comboot/menu.c32>
-- Starting Cage on boot with systemd https://github.com/cage-kiosk/cage/wiki/Starting-Cage-on-boot-with-systemd
+- Starting Cage on boot with systemd <https://github.com/cage-kiosk/cage/wiki/Starting-Cage-on-boot-with-systemd>
+- Freedesktop Plymouth Scripts <https://www.freedesktop.org/wiki/Software/Plymouth/Scripts/>

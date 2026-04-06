@@ -25,3 +25,33 @@ fun label_callback (text) {
 }
 
 Plymouth.SetMessageFunction(label_callback);
+
+// --- Progress Bar ---
+
+bar_w     = Math.Int(screen_w * 0.4);
+bar_h     = 6;
+bar_x     = Math.Int((screen_w - bar_w) / 2);
+bar_y     = Math.Int(screen_h * 0.86);
+
+// Track (background) — rendered once at full width
+bar_track_unit = Image.Text("█", 0.82, 0.82, 0.82, 1, "DejaVu Mono 12");
+bar_track_sprite = Sprite(bar_track_unit.Scale(bar_w, bar_h));
+bar_track_sprite.SetX(bar_x);
+bar_track_sprite.SetY(bar_y);
+bar_track_sprite.SetZ(9999);
+
+// Fill — unit image cached, scaled on each progress update
+bar_fill_unit   = Image.Text("█", 0.29, 0.22, 0.19, 1, "DejaVu Mono 12");
+bar_fill_sprite = Sprite();
+bar_fill_sprite.SetX(bar_x);
+bar_fill_sprite.SetY(bar_y);
+bar_fill_sprite.SetZ(10000);
+
+fun progress_callback(duration, progress) {
+    fill_w = Math.Int(bar_w * progress);
+    if (fill_w >= 1) {
+        bar_fill_sprite.SetImage(bar_fill_unit.Scale(fill_w, bar_h));
+    }
+}
+
+Plymouth.SetBootProgressFunction(progress_callback);
