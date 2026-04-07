@@ -50,8 +50,8 @@ $(TESTVMDISK): $(ISOPRESEED)
 test-boot: $(TESTVMDISK)
 	qemu-system-x86_64 \
 	    -enable-kvm -cpu host -smp 4 -m 1G \
-	    -net nic,model=virtio \
-	    -net user,hostfwd=tcp::2222-:22 \
+	    -netdev user,id=net0,hostfwd=tcp::2222-:22 \
+	    -device virtio-net-pci,netdev=net0,mac=aa:bb:cc:dd:ee:ff \
 	    -serial stdio $(if $(OVMF),-bios $(OVMF) )\
 	    -cdrom $(ISOPRESEED) \
 	    -drive file=$(TESTVMDISK),format=qcow2,if=virtio,cache=unsafe \
