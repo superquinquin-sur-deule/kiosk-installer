@@ -12,6 +12,9 @@ TEXT_Z_ORDER = 10;
 FONT_SIZE    = SCREEN_HEIGHT / 90;
 FONT_NAME    = "DejaVu Sans Mono";
 LINE_HEIGHT  = FONT_SIZE + (SCREEN_HEIGHT / 120);
+MAX_LINES    = 6;
+TEXT_ZONE_WIDTH = SCREEN_WIDTH / 4;
+TEXT_ZONE_X     = (SCREEN_WIDTH - TEXT_ZONE_WIDTH) / 2;
 
 // --- Colors ---
 // #4a3931
@@ -26,6 +29,10 @@ logo_sprite.SetX((SCREEN_WIDTH - logo_image.GetWidth()) / 2);
 logo_sprite.SetY((SCREEN_HEIGHT - logo_image.GetHeight()) / 2);
 logo_sprite.SetZ(-100);
 
+logo_bottom      = (SCREEN_HEIGHT + logo_image.GetHeight()) / 2;
+TEXT_ZONE_TOP    = logo_bottom + TEXT_MARGIN;
+TEXT_ZONE_BOTTOM = TEXT_ZONE_TOP + MAX_LINES * LINE_HEIGHT;
+
 // --- Message log ---
 global.messages;
 global.message_count = 0;
@@ -37,9 +44,10 @@ fun make_text_image(text)
 
 fun make_text_sprite(text, y)
 {
+    image = make_text_image(text);
     sprite = Sprite();
-    sprite.SetPosition(TEXT_MARGIN, y, TEXT_Z_ORDER);
-    sprite.SetImage(make_text_image(text));
+    sprite.SetPosition(TEXT_ZONE_X, y, TEXT_Z_ORDER);
+    sprite.SetImage(image);
     return sprite;
 }
 
@@ -50,9 +58,8 @@ fun clear_message(index)
 
 fun fade_near_bottom(index, y)
 {
-    bottom_limit = SCREEN_HEIGHT - TEXT_MARGIN;
-    if (y >= bottom_limit - TEXT_MARGIN && y <= bottom_limit) {
-        distance_from_bottom = bottom_limit - y;
+    if (y >= TEXT_ZONE_BOTTOM - TEXT_MARGIN && y <= TEXT_ZONE_BOTTOM) {
+        distance_from_bottom = TEXT_ZONE_BOTTOM - y;
         global.messages[index].SetOpacity((TEXT_MARGIN / 100 * distance_from_bottom) / 100);
     }
 }
@@ -61,9 +68,11 @@ fun scroll_messages_down()
 {
     for (i = global.message_count; i != 0; --i)
     {
+        if (!global.messages[i]) continue;
+
         new_y = global.messages[i].GetY() + LINE_HEIGHT;
 
-        if (new_y > SCREEN_HEIGHT - TEXT_MARGIN) {
+        if (new_y > TEXT_ZONE_BOTTOM) {
             clear_message(i);
             continue;
         }
@@ -78,7 +87,7 @@ fun push_message(text)
     scroll_messages_down();
 
     global.message_count++;
-    global.messages[global.message_count] = make_text_sprite(text, TEXT_MARGIN);
+    global.messages[global.message_count] = make_text_sprite(text, TEXT_ZONE_TOP);
 
     return global.message_count;
 }
