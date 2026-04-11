@@ -7,20 +7,24 @@ SCREEN_WIDTH  = Window.GetWidth();
 SCREEN_HEIGHT = Window.GetHeight();
 
 // --- Layout ---
-TEXT_MARGIN  = SCREEN_WIDTH / 20;
-TEXT_Z_ORDER = 10;
-FONT_SIZE    = SCREEN_HEIGHT / 90;
-FONT_NAME    = "DejaVu Sans Mono";
-LINE_HEIGHT  = FONT_SIZE + (SCREEN_HEIGHT / 120);
-MAX_LINES    = 6;
-TEXT_ZONE_WIDTH = SCREEN_WIDTH / 4;
-TEXT_ZONE_X     = (SCREEN_WIDTH - TEXT_ZONE_WIDTH) / 2;
+TEXT_MARGIN      = SCREEN_WIDTH / 20;
+TEXT_Z_ORDER     = 10;
+FONT_SIZE        = SCREEN_HEIGHT / 90;
+FONT_NAME        = "DejaVu Sans Mono";
+LINE_HEIGHT      = FONT_SIZE + (SCREEN_HEIGHT / 120);
+MAX_LINES        = 6;
+TEXT_ZONE_WIDTH  = SCREEN_WIDTH / 4;
+TEXT_ZONE_X      = (SCREEN_WIDTH - TEXT_ZONE_WIDTH) / 2;
 
 // --- Colors ---
-// #4a3931
-TEXT_COLOR_R = 0.29;
-TEXT_COLOR_G = 0.22;
-TEXT_COLOR_B = 0.19;
+TEXT_COLOR_R = 0.29; TEXT_COLOR_G = 0.22; TEXT_COLOR_B = 0.19; // #4a3931
+OK_COLOR_R   = 0.13; OK_COLOR_G   = 0.54; OK_COLOR_B   = 0.13; // #218a21
+KO_COLOR_R   = 0.75; KO_COLOR_G   = 0.12; KO_COLOR_B   = 0.07; // #bf1f12
+
+// --- Signals ---
+// Must stay in sync with SIGNAL_OK / SIGNAL_FAILED in plymouth_send.py
+SIGNAL_OK     = "!ok";
+SIGNAL_FAILED = "!failed";
 
 // --- Logo ---
 logo_image = Image("splash.png");
@@ -34,8 +38,9 @@ TEXT_ZONE_TOP    = logo_bottom + TEXT_MARGIN;
 TEXT_ZONE_BOTTOM = TEXT_ZONE_TOP + MAX_LINES * LINE_HEIGHT;
 
 // --- Message log ---
-global.messages;
-global.message_count = 0;
+global.message_count  = 0;
+global.pending_sprite = 0;
+global.pending_text   = "";
 
 fun make_text_image(text)
 {
@@ -82,12 +87,36 @@ fun scroll_messages_down()
     }
 }
 
+fun apply_status(signal)
+{
+    if (!global.pending_sprite) return;
+
+    if (signal == SIGNAL_OK) {
+        global.pending_sprite.SetImage(
+            Image.Text("[ OK  ] " + global.pending_text, OK_COLOR_R, OK_COLOR_G, OK_COLOR_B, 1, FONT_NAME + " " + FONT_SIZE)
+        );
+    }
+    if (signal == SIGNAL_FAILED) {
+        global.pending_sprite.SetImage(
+            Image.Text("[ ERR ] " + global.pending_text, KO_COLOR_R, KO_COLOR_G, KO_COLOR_B, 1, FONT_NAME + " " + FONT_SIZE)
+        );
+    }
+
+    global.pending_sprite = 0;
+}
+
 fun push_message(text)
 {
+    if (text == SIGNAL_OK)     { apply_status(text); return; }
+    if (text == SIGNAL_FAILED) { apply_status(text); return; }
+
     scroll_messages_down();
 
     global.message_count++;
-    global.messages[global.message_count] = make_text_sprite(text, TEXT_ZONE_TOP);
+    global.messages[global.message_count] = make_text_sprite("[ RUN ] " + text, TEXT_ZONE_TOP);
+
+    global.pending_sprite = global.messages[global.message_count];
+    global.pending_text   = text;
 
     return global.message_count;
 }
