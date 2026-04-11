@@ -7,12 +7,11 @@ SCREEN_WIDTH  = Window.GetWidth();
 SCREEN_HEIGHT = Window.GetHeight();
 
 // --- Layout ---
-TEXT_MARGIN       = SCREEN_WIDTH / 20;
-TEXT_Z_ORDER      = 10;
-FONT_SIZE         = SCREEN_HEIGHT / 90;
-FONT_NAME         = "DejaVu Sans Mono";
-LINE_HEIGHT       = FONT_SIZE + (SCREEN_HEIGHT / 120);
-MAX_VISIBLE_LINES = (SCREEN_HEIGHT - TEXT_MARGIN * 2) / LINE_HEIGHT;
+TEXT_MARGIN  = SCREEN_WIDTH / 20;
+TEXT_Z_ORDER = 10;
+FONT_SIZE    = SCREEN_HEIGHT / 90;
+FONT_NAME    = "DejaVu Sans Mono";
+LINE_HEIGHT  = FONT_SIZE + (SCREEN_HEIGHT / 120);
 
 // --- Colors ---
 // #4a3931
@@ -49,43 +48,37 @@ fun clear_message(index)
     global.messages[index] = 0;
 }
 
-fun fade_near_top(index, y)
+fun fade_near_bottom(index, y)
 {
-    if (y >= 0 && y <= TEXT_MARGIN) {
-        global.messages[index].SetOpacity((TEXT_MARGIN / 100 * y) / 100);
+    bottom_limit = SCREEN_HEIGHT - TEXT_MARGIN;
+    if (y >= bottom_limit - TEXT_MARGIN && y <= bottom_limit) {
+        distance_from_bottom = bottom_limit - y;
+        global.messages[index].SetOpacity((TEXT_MARGIN / 100 * distance_from_bottom) / 100);
     }
 }
 
-fun scroll_messages_up()
+fun scroll_messages_down()
 {
     for (i = global.message_count; i != 0; --i)
     {
-        new_y = global.messages[i].GetY() - LINE_HEIGHT;
+        new_y = global.messages[i].GetY() + LINE_HEIGHT;
 
-        if (new_y < 0) {
+        if (new_y > SCREEN_HEIGHT - TEXT_MARGIN) {
             clear_message(i);
             continue;
         }
 
-        fade_near_top(i, new_y);
+        fade_near_bottom(i, new_y);
         global.messages[i].SetY(new_y);
     }
 }
 
 fun push_message(text)
 {
-    if (global.messages[global.message_count]) {
-        y = global.messages[global.message_count].GetY() + LINE_HEIGHT;
-    } else {
-        y = TEXT_MARGIN;
-    }
+    scroll_messages_down();
 
     global.message_count++;
-    global.messages[global.message_count] = make_text_sprite(text, y);
-
-    if (global.message_count > MAX_VISIBLE_LINES) {
-        scroll_messages_up();
-    }
+    global.messages[global.message_count] = make_text_sprite(text, TEXT_MARGIN);
 
     return global.message_count;
 }
