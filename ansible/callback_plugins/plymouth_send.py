@@ -1,10 +1,13 @@
 import subprocess
 
-from ansible.playbook.block import Block
 from ansible.plugins.callback import CallbackBase
 
 PLYMOUTH_CMD = "/usr/bin/plymouth"
 SUDO_CMD = "/usr/bin/sudo"
+
+# Must stay in sync with SIGNAL_OK / SIGNAL_FAILED in superquinquin.script
+SIGNAL_OK = "!ok"
+SIGNAL_FAILED = "!failed"
 
 
 class CallbackModule(CallbackBase):
@@ -37,8 +40,11 @@ class CallbackModule(CallbackBase):
         except Exception:
             pass
 
+    def v2_runner_on_start(self, _, task):
+        self._send_to_plymouth(task.get_name())
+
     def v2_runner_on_ok(self, result):
-        self._send_to_plymouth(f"➜ OK: {result._task.get_name()}")
+        self._send_to_plymouth(SIGNAL_OK)
 
     def v2_runner_on_failed(self, result, ignore_errors=False):
-        self._send_to_plymouth(f"➜ FAILED: {result._task.get_name()}")
+        self._send_to_plymouth(SIGNAL_FAILED)
