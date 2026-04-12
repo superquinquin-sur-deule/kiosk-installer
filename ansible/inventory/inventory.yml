@@ -1,6 +1,7 @@
 ---
 hosts:
   aa:bb:cc:dd:ee:ff: caisse-vm
+  c8:d3:ff:3f:8c:e8: caisse-01
 
 # groups:
 #   sample:
