@@ -100,6 +100,16 @@ make test-boot
 ssh -F .ssh_config kiosk-dev sudo journalctl -f
 ```
 
+### Plymouth theme
+
+```sh
+# Run plymouthd in a separate terminal
+make test-plymouthd
+
+# Reload edited theme
+make test-plymouth
+```
+
 ## References
 
 - Modifying an installation ISO image to preseed the installer from its initrd <https://wiki.debian.org/DebianInstaller/Preseed/EditIso>
