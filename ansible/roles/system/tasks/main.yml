@@ -78,9 +78,9 @@
       * hard core 0
     mode: "0644"
 
-- name: Set hostname from machine-id
+- name: Set hostname from inventory
   ansible.builtin.hostname:
-    name: "kiosk-{{ ansible_default_ipv4.address.split('.')[-1] }}"
+    name: "{{ inventory_hostname }}"
 
 - name: Synchronize /etc/hosts with new hostname
   ansible.builtin.lineinfile:
