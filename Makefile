@@ -3,6 +3,7 @@ ISOPRESEED   = preseed-$(ISOBASEFILE)
 ISOLABEL     = KIOSK
 TESTVMDISK   = test-disk.qcow2
 INSTALLDIR   = installer
+ASSETS       = $(INSTALLDIR)/cdrom/assets
 INSTALLFILES = $(shell find $(INSTALLDIR)/cdrom -type f)
 INITRDFILES  = $(shell find $(INSTALLDIR)/initrd -type f)
 
@@ -63,3 +64,17 @@ test-ansible:
 	    "mkdir -p $(dir $(PLAYBOOK)) && \
 	    sudo mount -t 9p -o trans=virtio ansible $(dir $(PLAYBOOK)) 2>/dev/null || true && \
 	    ansible-playbook $(PLAYBOOK) -i localhost, $(if $(TAG),--tags $(TAG))"
+
+.PHONY: test-plymouthd
+test-plymouthd:
+	@ssh -F .ssh_config kiosk-dev \
+	    "sudo chvt 2 ; sudo plymouthd --no-daemon --tty=tty2 --debug"
+
+.PHONY: test-plymouth
+test-plymouth: $(shell find $(ASSETS)/usr/share/plymouth/themes/superquinquin -type f)
+	@ssh -F .ssh_config kiosk-dev \
+	    "sudo chmod -R a+rw $(dir $(patsubst $(ASSETS)/%,/%,$<))"
+	@$(foreach f, $^, \
+	    scp -F .ssh_config $(f) kiosk-dev:$(patsubst $(ASSETS)/%,/%,$(f));)
+	@ssh -F .ssh_config kiosk-dev \
+	    "sudo plymouth show-splash"
