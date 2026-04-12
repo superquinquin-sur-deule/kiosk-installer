@@ -119,3 +119,4 @@ make test-plymouth
 - Starting Cage on boot with systemd <https://github.com/cage-kiosk/cage/wiki/Starting-Cage-on-boot-with-systemd>
 - Freedesktop Plymouth Scripts <https://www.freedesktop.org/wiki/Software/Plymouth/Scripts/>
 - Grub Theme file format (Common properties) <https://www.gnu.org/software/grub/manual/grub/html_node/Theme-file-format.html#Common-properties>
+- Print message box <https://gitlab.com/oficsu/kreelista/-/blob/master/kreelista.script>
