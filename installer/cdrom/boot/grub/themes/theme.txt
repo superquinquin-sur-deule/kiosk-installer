@@ -1,8 +1,15 @@
 title-text:  "Kiosk Installer"
 title-color: "#4a3931"
 
-desktop-image: "splash.png"
-desktop-color: "#000000"
+desktop-color: "#ffffff"
+
++ image {
+    file   = "splash.png"
+    top    = 50%-160
+    left   = 50%-160
+    width  = 320
+    height = 320
+}
 
 + boot_menu {
     top    = 20%

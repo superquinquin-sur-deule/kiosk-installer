@@ -4,13 +4,12 @@ Window.SetBackgroundBottomColor(1, 1, 1);
 screen_w = Window.GetWidth();
 screen_h = Window.GetHeight();
 
-// --- Wallpaper ---
-
-wallpaper_image = Image("splash.png");
-wallpaper_sprite = Sprite(wallpaper_image);
-wallpaper_sprite.SetX((screen_w - wallpaper_image.GetWidth()) / 2);
-wallpaper_sprite.SetY((screen_h - wallpaper_image.GetHeight()) / 2);
-wallpaper_sprite.SetZ(-100);
+// --- Logo ---
+logo_image = Image("splash.png");
+logo_sprite = Sprite(logo_image);
+logo_sprite.SetX((SCREEN_WIDTH - logo_image.GetWidth()) / 2);
+logo_sprite.SetY((SCREEN_HEIGHT - logo_image.GetHeight()) / 2);
+logo_sprite.SetZ(-100);
 
 // --- Task Label ---
 
