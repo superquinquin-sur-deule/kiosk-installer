@@ -1,6 +1,6 @@
 ---
 - name: Configure kiosk
-  hosts: localhost
+  hosts: all
   connection: local
   become: true
   vars:

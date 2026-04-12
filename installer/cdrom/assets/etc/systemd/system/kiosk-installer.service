@@ -14,7 +14,9 @@ ExecStart=/usr/bin/ansible-pull \
     --url ${ANSIBLE_URL} \
     --checkout ${ANSIBLE_BRANCH} \
     --directory ${ANSIBLE_DIRECTORY} \
-    --inventory localhost, \
+    --inventory ${ANSIBLE_DIRECTORY}/ansible/inventory/inventory.py \
+    --limit all \
+    --force \
     ansible/local.yml
 
 # On first boot, graphical.target is queued before ansible has run: new Wants
