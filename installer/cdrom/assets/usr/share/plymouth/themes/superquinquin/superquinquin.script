@@ -1,8 +1,24 @@
+// --- Background ---
 Window.SetBackgroundTopColor(1, 1, 1);
 Window.SetBackgroundBottomColor(1, 1, 1);
 
-screen_w = Window.GetWidth();
-screen_h = Window.GetHeight();
+// --- Screen ---
+SCREEN_WIDTH  = Window.GetWidth();
+SCREEN_HEIGHT = Window.GetHeight();
+
+// --- Layout ---
+TEXT_MARGIN       = SCREEN_WIDTH / 20;
+TEXT_Z_ORDER      = 10;
+FONT_SIZE         = SCREEN_HEIGHT / 90;
+FONT_NAME         = "DejaVu Sans Mono";
+LINE_HEIGHT       = FONT_SIZE + (SCREEN_HEIGHT / 120);
+MAX_VISIBLE_LINES = (SCREEN_HEIGHT - TEXT_MARGIN * 2) / LINE_HEIGHT;
+
+// --- Colors ---
+// #4a3931
+TEXT_COLOR_R = 0.29;
+TEXT_COLOR_G = 0.22;
+TEXT_COLOR_B = 0.19;
 
 // --- Logo ---
 logo_image = Image("splash.png");
@@ -11,16 +27,67 @@ logo_sprite.SetX((SCREEN_WIDTH - logo_image.GetWidth()) / 2);
 logo_sprite.SetY((SCREEN_HEIGHT - logo_image.GetHeight()) / 2);
 logo_sprite.SetZ(-100);
 
-// --- Task Label ---
+// --- Message log ---
+global.messages;
+global.message_count = 0;
 
-label_sprite = Sprite();
-label_sprite.SetZ(10000);
-
-fun label_callback (text) {
-    label_image = Image.Text(text, 0.29, 0.22, 0.19, 1, "DejaVu Mono 12"); // #4a3931
-    label_sprite.SetImage(label_image);
-    label_sprite.SetX((screen_w - label_image.GetWidth()) / 2);
-    label_sprite.SetY(screen_h * 0.9);
+fun make_text_image(text)
+{
+    return Image.Text(text, TEXT_COLOR_R, TEXT_COLOR_G, TEXT_COLOR_B, 1, FONT_NAME + " " + FONT_SIZE);
 }
 
-Plymouth.SetMessageFunction(label_callback);
+fun make_text_sprite(text, y)
+{
+    sprite = Sprite();
+    sprite.SetPosition(TEXT_MARGIN, y, TEXT_Z_ORDER);
+    sprite.SetImage(make_text_image(text));
+    return sprite;
+}
+
+fun clear_message(index)
+{
+    global.messages[index] = 0;
+}
+
+fun fade_near_top(index, y)
+{
+    if (y >= 0 && y <= TEXT_MARGIN) {
+        global.messages[index].SetOpacity((TEXT_MARGIN / 100 * y) / 100);
+    }
+}
+
+fun scroll_messages_up()
+{
+    for (i = global.message_count; i != 0; --i)
+    {
+        new_y = global.messages[i].GetY() - LINE_HEIGHT;
+
+        if (new_y < 0) {
+            clear_message(i);
+            continue;
+        }
+
+        fade_near_top(i, new_y);
+        global.messages[i].SetY(new_y);
+    }
+}
+
+fun push_message(text)
+{
+    if (global.messages[global.message_count]) {
+        y = global.messages[global.message_count].GetY() + LINE_HEIGHT;
+    } else {
+        y = TEXT_MARGIN;
+    }
+
+    global.message_count++;
+    global.messages[global.message_count] = make_text_sprite(text, y);
+
+    if (global.message_count > MAX_VISIBLE_LINES) {
+        scroll_messages_up();
+    }
+
+    return global.message_count;
+}
+
+Plymouth.SetMessageFunction(push_message);
