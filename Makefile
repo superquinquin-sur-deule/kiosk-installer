@@ -47,6 +47,7 @@ $(TESTVMDISK): $(ISOPRESEED)
 	qemu-img create -f qcow2 $@ 20G
 
 .PHONY: test-boot
+test-boot: OUTPUT ?= 1
 test-boot: $(TESTVMDISK)
 	qemu-system-x86_64 \
 	    -enable-kvm -cpu host -smp 4 -m 1G \
@@ -55,7 +56,9 @@ test-boot: $(TESTVMDISK)
 	    -serial stdio $(if $(OVMF),-bios $(OVMF) )\
 	    -cdrom $(ISOPRESEED) \
 	    -drive file=$(TESTVMDISK),format=qcow2,if=virtio,cache=unsafe \
-	    -virtfs local,path=ansible,mount_tag=ansible,readonly=on,security_model=none
+	    -virtfs local,path=ansible,mount_tag=ansible,readonly=on,security_model=none \
+	    -device virtio-vga,max_outputs=$(OUTPUT),id=video0 \
+	    -display gtk,gl=on,show-tabs=on -vga none
 
 .PHONY: test-ansible
 test-ansible: DIR = kiosk-installer/ansible_dev
