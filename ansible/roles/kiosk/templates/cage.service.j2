@@ -17,7 +17,8 @@ Environment=KIOSK_URL={{ kiosk_url }}
 ExecStart=/usr/bin/cage -s -- /usr/bin/firefox --kiosk ${KIOSK_URL}
 ExecStartPost=+sh -c "tty_name='%i'; exec chvt $${tty_name#tty}"
 Restart=always
-User=kiosk
+User={{ kiosk_user }}
+Group={{ kiosk_user }}
 UtmpIdentifier=%I
 UtmpMode=user
 TTYPath=/dev/%I
@@ -25,7 +26,7 @@ TTYReset=yes
 TTYVHangup=yes
 TTYVTDisallocate=yes
 StandardInput=tty-fail
-PAMName=kiosk
+PAMName={{ kiosk_user }}
 
 [Install]
 WantedBy=graphical.target
