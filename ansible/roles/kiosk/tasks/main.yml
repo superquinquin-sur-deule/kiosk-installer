@@ -1,7 +1,8 @@
 ---
 - name: Create kiosk user
   ansible.builtin.user:
-    name: kiosk
+    name: "{{ kiosk_user }}"
+    uid: "{{ kiosk_userid }}"
     groups: "video,input,render"
     shell: /bin/bash
     create_home: true
@@ -13,14 +14,14 @@
       - firefox-esr
     state: present
 
-- name: Configure pam.d/kiosk
+- name: Configure pam.d
   ansible.builtin.copy:
-    src: "pam.d-kiosk"
-    dest: /etc/pam.d/kiosk
+    src: "pam.d-user"
+    dest: "/etc/pam.d/{{ kiosk_user }}"
 
 - name: Deploy cage service
   ansible.builtin.template:
-    src: "cage.service"
+    src: "cage.service.j2"
     dest: /etc/systemd/system/cage@.service
 
 - name: Enable cage service on tty1
