@@ -52,6 +52,7 @@ Legacy Boot on a volatile 20GB-sized qcow file
 - Console output redirected to `/dev/ttyS0` for debugging.
 - Host-to-guest SSH through `ssh -F ssh_config kiosk-dev`.
 - Local `ansible/` directory shared via VirtFS with the `ansible` tag.
+- Use `OUTPUT=2` to emulate a dual-screen (default: 1)
 
 ```sh
 # Start the VM

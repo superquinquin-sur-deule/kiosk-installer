@@ -27,3 +27,8 @@
 - name: Apply sysctl configuration
   ansible.builtin.shell: sysctl -p /etc/sysctl.d/*.conf
   listen: apply-sysctl
+
+- name: Gather custom facts
+  ansible.builtin.setup:
+    filter: ansible_local
+  listen: setup-ansible-local
