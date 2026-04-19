@@ -2,11 +2,10 @@
 Description=Cage Wayland compositor on %I
 After=systemd-user-sessions.service plymouth-quit-wait.service
 Before=graphical.target
-ConditionPathExists=/dev/tty0
+ConditionPathExists=/dev/%I
 Wants=dbus.socket systemd-logind.service
-After=dbus.socket systemd-logind.service
+After=dbus.socket systemd-logind.service getty@%i.service
 Conflicts=getty@%i.service
-After=getty@%i.service
 
 [Service]
 Type=simple

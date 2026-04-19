@@ -1,4 +1,7 @@
 ---
+- name: Gather service facts
+  ansible.builtin.service_facts:
+
 - name: Create kiosk user
   ansible.builtin.user:
     name: "{{ kiosk_user }}"
@@ -19,22 +22,24 @@
     src: "pam.d-user"
     dest: "/etc/pam.d/{{ kiosk_user }}"
 
-- name: Deploy cage service
+- name: Configure cage service
   ansible.builtin.template:
-    src: "cage.service.j2"
-    dest: /etc/systemd/system/cage@.service
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop:
+    - { src: "cage.j2", dest: "/etc/default/cage" }
+    - { src: "cage.service.j2", dest: "/etc/systemd/system/cage@.service" }
+  notify:
+    - systemd-daemon-reload
+    - restart-cage
 
-- name: Configure cage
-  ansible.builtin.template:
-    src: "cage.j2"
-    dest: /etc/default/cage
-  notify: restart-cage
+- name: Trigger systemd handlers now
+  meta: flush_handlers
 
 - name: Enable cage service on tty1
   ansible.builtin.systemd_service:
     name: cage@tty1.service
     enabled: true
-    daemon_reload: true
 
 - name: Set default target to graphical
   ansible.builtin.file:
