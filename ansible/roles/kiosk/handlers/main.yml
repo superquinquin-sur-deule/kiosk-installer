@@ -1,0 +1,13 @@
+- name: Daemon reload
+  ansible.builtin.systemd:
+    daemon_reload: true
+  listen: systemd-daemon-reload
+
+- name: Restart cage service on tty1
+  systemd:
+    name: cage@tty1.service
+    state: restarted
+  when:
+    - ansible_facts.services['cage@tty1.service'] is defined
+    - ansible_facts.services['cage@tty1.service'].state == "running"
+  listen: restart-cage
