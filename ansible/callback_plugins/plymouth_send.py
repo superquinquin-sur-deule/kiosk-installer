@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 from ansible.plugins.callback import CallbackBase
@@ -20,6 +21,9 @@ class CallbackModule(CallbackBase):
         self._plymouth_active = self._ping_plymouth()
 
     def _ping_plymouth(self):
+        if os.environ.get("USER") != "ansible":
+            return False
+
         try:
             result = subprocess.run(
                 [SUDO_CMD, PLYMOUTH_CMD, "--ping"],
