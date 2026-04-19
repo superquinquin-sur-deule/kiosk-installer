@@ -3,7 +3,7 @@ Description=Cage Wayland compositor on %I
 After=systemd-user-sessions.service plymouth-quit-wait.service
 Before=graphical.target
 ConditionPathExists=/dev/%I
-Wants=dbus.socket systemd-logind.service
+Wants=dbus.socket systemd-logind.service kanshi.service
 After=dbus.socket systemd-logind.service getty@%i.service
 Conflicts=getty@%i.service
 

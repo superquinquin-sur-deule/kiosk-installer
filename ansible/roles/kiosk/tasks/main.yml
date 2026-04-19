@@ -14,6 +14,7 @@
   ansible.builtin.apt:
     name:
       - cage
+      - kanshi
       - firefox-esr
     state: present
 
@@ -33,12 +34,34 @@
     - systemd-daemon-reload
     - restart-cage
 
+- name: Create kanshi configuration directory
+  ansible.builtin.file:
+    path: /etc/kanshi
+    state: directory
+    mode: "0755"
+
+- name: Configure kanshi service
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop:
+    - { src: "kanshi.j2", dest: "/etc/kanshi/config" }
+    - { src: "kanshi.service.j2", dest: "/etc/systemd/system/kanshi.service" }
+  notify:
+    - systemd-daemon-reload
+    - restart-kanshi
+
 - name: Trigger systemd handlers now
   meta: flush_handlers
 
 - name: Enable cage service on tty1
   ansible.builtin.systemd_service:
     name: cage@tty1.service
+    enabled: true
+
+- name: Enable kanshi service
+  ansible.builtin.systemd_service:
+    name: kanshi.service
     enabled: true
 
 - name: Set default target to graphical
