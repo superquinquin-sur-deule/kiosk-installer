@@ -106,6 +106,16 @@
     dest: "/etc/update-motd.d/20-superquinquin"
     mode: "0755"
 
+- name: Maintain ansible authorized keys
+  ansible.posix.authorized_key:
+    user: ansible
+    state: present
+    key: |-
+      {% for name, pubkey in admin_keys.items() %}
+      {{ pubkey }} {{ name }}
+      {% endfor %}
+    exclusive: true
+
 - name: Create directory for ansible custom facts
   ansible.builtin.file:
     state: directory
