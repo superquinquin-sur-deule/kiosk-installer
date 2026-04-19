@@ -10,10 +10,7 @@ After=getty@%i.service
 
 [Service]
 Type=simple
-Environment=XKB_DEFAULT_LAYOUT=fr
-Environment=XKB_DEFAULT_VARIANT=oss
-Environment=XKB_DEFAULT_MODEL=pc105
-Environment=KIOSK_URL={{ kiosk_url }}
+EnvironmentFile=/etc/default/cage
 ExecStart=/usr/bin/cage -s -- /usr/bin/firefox --kiosk ${KIOSK_URL}
 ExecStartPost=+sh -c "tty_name='%i'; exec chvt $${tty_name#tty}"
 Restart=always
