@@ -11,3 +11,12 @@
     - ansible_facts.services['cage@tty1.service'] is defined
     - ansible_facts.services['cage@tty1.service'].state == "running"
   listen: restart-cage
+
+- name: Restart kanshi
+  systemd:
+    name: kanshi.service
+    state: restarted
+  when:
+    - ansible_facts.services['kanshi.service'] is defined
+    - ansible_facts.services['kanshi.service'].state == "running"
+  listen: restart-kanshi

@@ -1,0 +1,5 @@
+profile mirror {
+{% for output in ansible_local.display_outputs %}
+    output "{{ output.name }}" mode "{{ output.mode }}" position 0,0
+{% endfor %}
+}

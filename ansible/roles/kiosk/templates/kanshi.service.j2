@@ -1,0 +1,19 @@
+[Unit]
+Description=Dynamic output configuration for Wayland compositors
+Documentation=man:kanshi(1)
+PartOf=cage@tty1.service
+After=cage@tty1.service
+StartLimitIntervalSec=60s
+StartLimitBurst=5
+
+[Service]
+User={{ kiosk_user }}
+Group={{ kiosk_user }}
+Type=simple
+Environment=XDG_RUNTIME_DIR=/run/user/{{ kiosk_userid }}
+ExecStart=/usr/bin/kanshi --config /etc/kanshi/config
+Restart=always
+RestartSec=1s
+
+[Install]
+WantedBy=cage@tty1.service
