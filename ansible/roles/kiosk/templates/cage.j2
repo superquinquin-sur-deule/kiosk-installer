@@ -1,0 +1,7 @@
+KIOSK_URL={{ kiosk_url }}
+{% if ansible_virtualization_type not in ["none", ""] %}
+WLR_NO_HARDWARE_CURSORS=1
+{% endif %}
+XKB_DEFAULT_LAYOUT=fr
+XKB_DEFAULT_MODEL=pc105
+XKB_DEFAULT_VARIANT=oss
