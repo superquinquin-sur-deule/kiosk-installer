@@ -21,3 +21,17 @@ $(ASSETS)/etc/default/kiosk-installer: $(INSTALLER_DEFAULTS)
 	        gsub(regex, vars[v]) \
 	    } print } \
 	' $(word 2, $^) $< > $@
+
+# authorized_keys
+KEYS_FILE     = $(ASSETS)/var/lib/ansible/.ssh/authorized_keys
+INSTALLFILES += $(KEYS_FILE)
+
+.INTERMEDIATE: $(KEYS_FILE)
+
+$(KEYS_FILE): ansible/group_vars/all.yml
+	awk -F'[: "]+' '\
+	    /^admin_keys:/ { f=1; next } \
+	    /^[a-z]/       { f=0 } \
+	    f && /^ +/     { print $$3, $$4, $$2 } \
+	' $< > $@
+	@test -s $@ || (echo "error: $<: no keys found"; exit 1)
