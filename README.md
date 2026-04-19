@@ -71,34 +71,32 @@ make OVMF=/usr/share/edk2/x64/OVMF.4m.fd test-boot
 
 ### Provisionning
 
-The `ansible/` directory is mounted as a 9p volume inside the VM. This allows live
-editing of the playbook on the host and immediate execution on the guest.
+A special kiosk-vm lives in inventory, based on VM MAC address
 
 ```sh
-# Run the local-only playbook through SSH
-make test-ansible
-
-# Run a subset by using ansible tags
-make TAG=kiosk test-ansible
+cd ansible/
+ansible-inventory --list
+ansible-playbook local.yml --limit dev
 ```
 
-Or run a local git daemon to validate the sequence boot with your current work
+Run a local git daemon to validate the sequence boot with your current work
 
 ```sh
 # Open a side terminal for daemonizing git
 git commit -a -m "wip: feat: -"
 git daemon --reuseaddr --base-path=. --export-all --verbose --enable=receive-pack
+```
 
+```yaml
 # Edit kiosk-installer env variables
-# installer/cdrom/assets/etc/default/kiosk-installer
-ANSIBLE_URL=git://10.0.2.2/
-ANSIBLE_BRANCH=florent/ansible
+# ansible/roles/installer/defaults/main.yml
+installer_url: "git://10.0.2.2/"
+installer_branch: "florent/ansible"
+```
 
-# Run a fresh install
-make test-boot
-
-# Follow journalctl
-ssh -F .ssh_config kiosk-dev sudo journalctl -f
+```sh
+ansible-playbook local.yml --limit dev
+ssh -F .ssh_config kiosk-dev sudo reboot
 ```
 
 ### Plymouth theme
