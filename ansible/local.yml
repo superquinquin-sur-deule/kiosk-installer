@@ -1,10 +1,7 @@
 ---
 - name: Configure kiosk
   hosts: all
-  connection: local
   become: true
-  vars:
-    ansible_python_interpreter: auto_silent
 
   roles:
     - { role: installer, tags: [system, installer] }
