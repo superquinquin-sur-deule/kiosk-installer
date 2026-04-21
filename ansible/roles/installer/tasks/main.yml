@@ -1,0 +1,13 @@
+---
+- name: Configure kiosk-installer service
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop:
+    - { src: "kiosk-installer.j2", dest: "/etc/default/kiosk-installer" }
+    - {
+        src: "kiosk-installer.service",
+        dest: "/etc/systemd/system/kiosk-installer.service",
+      }
+  notify:
+    - systemd-daemon-reload
