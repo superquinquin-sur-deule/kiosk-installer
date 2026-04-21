@@ -11,6 +11,8 @@ $(ISOPRESEED): .xorrisorc
 	rm -f $(ISOPRESEED)
 	xorriso -no_rc -options_from_file $<
 
+include $(shell find . -mindepth 2 -name Makefile)
+
 .PHONY: usb
 usb:
 	@test -n "$(DEVICE)" || (echo "Error: DEVICE is undefined. Usage: make DEVICE=/dev/sdX usb"; exit 1)
