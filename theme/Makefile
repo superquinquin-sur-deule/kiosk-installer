@@ -10,9 +10,10 @@ SVGURL = https://www.superquinquin.fr/wp-content/themes/superquinquin/img/superq
 # mechanism: 9 PNG images of 1×1 pixel covering positions `c nw n ne w e sw s # se`.
 # All tiles share the same gold color "#f6d443", producing a solid rectangle
 # with no rounded corners.
-GRUBTHEMEBG  = installer/cdrom/boot/grub/themes/bg
-GRUBMAP      = c nw n ne w e sw s se
-GRUBMAPFILES = $(GRUBMAP:%=$(GRUBTHEMEBG)/select_%.png)
+GRUBTHEMEBG   = installer/cdrom/boot/grub/themes/bg
+GRUBMAP       = c nw n ne w e sw s se
+GRUBMAPFILES  = $(GRUBMAP:%=$(GRUBTHEMEBG)/select_%.png)
+INSTALLFILES += $(SPLASH) $(GRUBMAPFILES)
 
 .INTERMEDIATE: $(SPLASH) $(GRUBMAPFILES)
 
