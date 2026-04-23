@@ -20,6 +20,13 @@ def _first_line(path):
         return ""
 
 
+def _is_supported(path):
+    try:
+        return DEFAULT_MODE in path.read_text().splitlines()
+    except OSError:
+        return False
+
+
 def discover_outputs():
     outputs = []
     for status_path in sorted(DRM_ROOT.glob("card?/card*/status")):
@@ -29,9 +36,13 @@ def discover_outputs():
         drm_dir = status_path.parent
         name = re.sub(r"^card\d+-", "", drm_dir.name)
 
-        raw = _first_line(drm_dir / "modes")
-        m = _MODE_RE.search(raw)
-        mode = m.group() if m else DEFAULT_MODE
+        modes_path = drm_dir / "modes"
+        if _is_supported(modes_path):
+            mode = DEFAULT_MODE
+        else:
+            raw = _first_line(modes_path)
+            m = _MODE_RE.search(raw)
+            mode = m.group() if m else DEFAULT_MODE
 
         outputs.append({"name": name, "mode": mode})
 
