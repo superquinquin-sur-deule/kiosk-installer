@@ -10,7 +10,7 @@ Conflicts=getty@%i.service
 [Service]
 Type=simple
 EnvironmentFile=/etc/default/cage
-ExecStart=/usr/bin/cage -s -- /usr/bin/firefox --kiosk ${KIOSK_URL}
+ExecStart=/usr/bin/cage -s -- /usr/bin/firefox {{ kiosk_options }} ${KIOSK_URL}
 ExecStartPost=+sh -c "tty_name='%i'; exec chvt $${tty_name#tty}"
 Restart=always
 User={{ kiosk_user }}
