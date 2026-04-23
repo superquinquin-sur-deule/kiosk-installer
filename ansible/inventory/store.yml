@@ -1,5 +1,5 @@
 store:
   hosts:
     caisse-01:
-      ansible_host: 192.168.3.11
+      ansible_host: 192.168.1.12
       ansible_macaddress: "c8:d3:ff:3f:8c:e8"
