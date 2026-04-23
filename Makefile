@@ -44,7 +44,7 @@ initrd_final.gz: initrd_original.gz initrd_patch.gz
 	@echo "-boot_image any replay" >> $@
 	@echo "-compliance no_emul_toc" >> $@
 
-$(TESTVMDISK): $(ISOPRESEED)
+$(TESTVMDISK):
 	qemu-img create -f qcow2 $@ 20G
 
 .PHONY: test-boot
