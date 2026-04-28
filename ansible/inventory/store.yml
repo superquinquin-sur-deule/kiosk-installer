@@ -3,3 +3,13 @@ store:
     caisse-01:
       ansible_host: 192.168.1.12
       ansible_macaddress: "c8:d3:ff:3f:8c:e8"
+    caisse-02:
+      ansible_host: 192.168.1.113
+      ansible_macaddress: "9c:7b:ef:b5:f0:81"
+    caisse-03:
+      ansible_host: "192.168.1.29"
+      ansible_macaddress: "9c:7b:ef:b5:ef:9c"
+
+    accueil-01:
+      ansible_host: 192.168.1.224
+      ansible_macaddress: "fc:4d:d4:f4:03:c7"
