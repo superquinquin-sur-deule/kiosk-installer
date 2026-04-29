@@ -1,0 +1,6 @@
+---
+accueil:
+  hosts:
+    accueil-01:
+      ansible_host: 192.168.1.224
+      ansible_macaddress: "fc:4d:d4:f4:03:c7"
