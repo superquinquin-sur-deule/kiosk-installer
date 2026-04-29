@@ -1,0 +1,14 @@
+---
+firefox_extension_id: "kiosk-auth@superquinquin-sur-deule.org"
+firefox_extension_dir: "/usr/share/firefox-esr/distribution/extensions/{{ firefox_extension_id }}"
+firefox_extension_version: "0.1.{{ '%Y%m%d-%H%M%S' | strftime }}"
+firefox_extension_policies:
+  Preferences:
+    xpinstall.signatures.required: false
+  ExtensionSettings: >-
+    {{ {
+      firefox_extension_id: {
+        "installation_mode": "force_installed",
+        "install_url": "file://" ~ firefox_extension_dir ~ ".xpi"
+      }
+    } }}

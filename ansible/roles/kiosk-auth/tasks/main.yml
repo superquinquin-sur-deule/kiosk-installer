@@ -1,0 +1,31 @@
+---
+- name: Install zip package
+  ansible.builtin.apt:
+    name: zip
+    state: present
+
+- name: Create extension directory
+  ansible.builtin.file:
+    path: "{{ firefox_extension_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Deploy kiosk-auth extension
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ firefox_extension_dir }}/{{ item.dest }}"
+    mode: "0644"
+  loop:
+    - { src: "content.js.j2", dest: "content.js" }
+    - { src: "manifest.json.j2", dest: "manifest.json" }
+
+- name: Create extension in .xpi archive format
+  community.general.archive:
+    path: "{{ firefox_extension_dir }}/*"
+    dest: "{{ firefox_extension_dir }}.xpi"
+    format: zip
+
+- name: Update Firefox policies
+  firefox_policies:
+    path: /usr/lib/firefox-esr/distribution/policies.json
+    policies: "{{ firefox_extension_policies }}"

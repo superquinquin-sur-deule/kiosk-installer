@@ -7,3 +7,4 @@
     - { role: installer, tags: [system, installer] }
     - { role: system, tags: [system] }
     - { role: kiosk, tags: [apps, kiosk] }
+    - { role: kiosk-auth, tags: [apps, kiosk-auth] }

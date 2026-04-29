@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Odoo Kiosk Auth",
+  "version": "{{ firefox_extension_version }}",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{{ firefox_extension_id }}"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.trobz.com/*web/login*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
