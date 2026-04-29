@@ -1,4 +1,7 @@
-KIOSK_URL={{ kiosk_url }}
+FIREFOX_URL="{{ kiosk_url }}"
+{% if kiosk_mode %}
+FIREFOX_MODE=--kiosk
+{% endif %}
 {% if ansible_virtualization_type not in ["none", ""] %}
 WLR_NO_HARDWARE_CURSORS=1
 {% endif %}
