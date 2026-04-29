@@ -57,17 +57,8 @@ test-boot: $(TESTVMDISK)
 	    -serial stdio $(if $(OVMF),-bios $(OVMF) )\
 	    -cdrom $(ISOPRESEED) \
 	    -drive file=$(TESTVMDISK),format=qcow2,if=virtio,cache=unsafe \
-	    -virtfs local,path=ansible,mount_tag=ansible,readonly=on,security_model=none \
 	    -device virtio-vga,max_outputs=$(OUTPUT),id=video0 \
 	    -display gtk,gl=on,show-tabs=on -vga none
-
-.PHONY: test-ansible
-test-ansible: DIR = kiosk-installer/ansible_dev
-test-ansible:
-	@ssh -F .ssh_config kiosk-dev \
-	    "mkdir -p $(DIR) && \
-	    sudo mount -t 9p -o trans=virtio ansible $(DIR) 2>/dev/null || true && \
-	    cd $(DIR) && ansible-playbook local.yml $(if $(TAG),--tags $(TAG))"
 
 .PHONY: test-plymouthd
 test-plymouthd:
