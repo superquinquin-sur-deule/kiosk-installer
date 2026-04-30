@@ -1,4 +1,2 @@
-installer_branch: "main"
-installer_config: "ansible/ansible.cfg"
-installer_inventory: "ansible/scripts/local.py"
 installer_url: "https://github.com/superquinquin-sur-deule/kiosk-installer.git"
+installer_branch: "main"
