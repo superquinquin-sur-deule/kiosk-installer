@@ -70,10 +70,10 @@
     dest: /etc/systemd/system/default.target
     state: link
 
-- name: Configure Firefox
-  ansible.builtin.copy:
-    src: "firefox-policies.json"
-    dest: /usr/lib/firefox-esr/distribution/policies.json
+- name: Configure Firefox policies
+  firefox_policies:
+    path: /usr/lib/firefox-esr/distribution/policies.json
+    policies: "{{ firefox_policies | ansible.builtin.combine(firefox_policies_extra, recursive=True) }}"
 
 - name: Create kiosk profile directory
   ansible.builtin.file:
