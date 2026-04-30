@@ -1,3 +1,4 @@
 ---
 kiosk_mode: yes
 kiosk_url: https://www.superquinquin.fr
+firefox_policies_extra: {}
