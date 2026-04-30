@@ -35,3 +35,15 @@ $(KEYS_FILE): ansible/group_vars/all.yml
 	    f && /^ +/     { print $$3, $$4, $$2 } \
 	' $< > $@
 	@test -s $@ || (echo "error: $<: no keys found"; exit 1)
+
+# ansible vault file
+VAULT_FILE    = $(ASSETS)/var/lib/ansible/.vault
+INSTALLFILES += $(VAULT_FILE)
+
+.INTERMEDIATE: $(VAULT_FILE)
+
+ansible/.vault:
+	touch $@
+
+$(VAULT_FILE): ansible/.vault
+	cp $< $@
