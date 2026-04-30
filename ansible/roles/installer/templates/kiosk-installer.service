@@ -15,6 +15,7 @@ ExecStart=/usr/bin/ansible-pull \
     --checkout ${ANSIBLE_BRANCH} \
     --directory ${ANSIBLE_DIRECTORY} \
     --inventory ${ANSIBLE_INVENTORY} \
+    --vault-password-file ${ANSIBLE_VAULT} \
     --connection local \
     --limit all \
     --force \
