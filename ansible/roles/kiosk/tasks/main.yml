@@ -74,3 +74,10 @@
   ansible.builtin.copy:
     src: "firefox-policies.json"
     dest: /usr/lib/firefox-esr/distribution/policies.json
+
+- name: Create kiosk profile directory
+  ansible.builtin.file:
+    path: "{{ kiosk_profile }}"
+    owner: "{{ kiosk_user }}"
+    group: "{{ kiosk_user }}"
+    state: directory

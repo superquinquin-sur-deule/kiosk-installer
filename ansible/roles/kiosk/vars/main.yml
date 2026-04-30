@@ -1,0 +1,4 @@
+---
+kiosk_user: kiosk
+kiosk_userid: 1002
+kiosk_profile: /var/lib/kiosk

@@ -1,5 +1,3 @@
 ---
-kiosk_url: https://www.superquinquin.fr
-kiosk_user: kiosk
-kiosk_userid: 1002
 kiosk_mode: yes
+kiosk_url: https://www.superquinquin.fr
