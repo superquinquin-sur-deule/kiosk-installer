@@ -42,3 +42,15 @@ firefox_policies:
     FeatureRecommendations: false
     SkipOnboarding: true
     MoreFromMozilla: false
+  WebsiteFilter: >-
+    {% if firefox_policies_whitelist | length > 0 -%}
+    {{ {
+      "Block": ["<all_urls>"],
+      "Exceptions": firefox_policies_whitelist
+    } }}
+    {%- else -%}
+    {{ {
+      "Block": [],
+      "Exceptions": []
+    } }}
+    {%- endif %}
