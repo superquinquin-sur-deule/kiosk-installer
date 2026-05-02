@@ -6,3 +6,5 @@ firefox_policies_extra:
   DisableDeveloperTools: false
   BlockAboutConfig: false
   BlockAboutAddons: false
+
+firefox_policies_whitelist: []
