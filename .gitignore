@@ -1,5 +1,6 @@
 *.gz
 *.iso
 *.qcow2
+.vault
 .xorrisorc
 __pycache__

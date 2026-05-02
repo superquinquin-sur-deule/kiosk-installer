@@ -1,4 +1,23 @@
 (function () {
   const manifest = browser.runtime.getManifest();
   console.log(`[Kiosk Auth] Version: ${manifest.version}`);
+
+  const err = [...document.querySelectorAll(".alert-danger")].find(
+    (el) =>
+      el.innerText.includes("Wrong login/password") ||
+      el.innerText.includes("Mauvais nom d'utilisateur ou mot de passe"),
+  );
+
+  if (err)
+    return console.error(`[Kiosk Auth] Aborted: ${err.innerText.trim()}`);
+
+  const login = document.getElementById("login"),
+    pass = document.getElementById("password"),
+    form = document.querySelector(".oe_login_form");
+
+  if (login && pass && form && !login.value) {
+    login.value = "{{ vault_odoo_email }}";
+    pass.value = "{{ vault_odoo_password }}";
+    form.submit();
+  }
 })();

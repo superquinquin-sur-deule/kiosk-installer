@@ -79,6 +79,13 @@ ansible-inventory --list
 ansible-playbook local.yml --limit dev
 ```
 
+Some roles require a vault password file.
+
+```sh
+ansible-vault encrypt_string 'blah' --vault-password-file .vault
+nsible-playbook local.yml --limit dev --tags kiosk-auth --vault-password-file .vault
+```
+
 Run a local git daemon to validate the sequence boot with your current work
 
 ```sh
