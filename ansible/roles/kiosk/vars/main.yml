@@ -4,44 +4,54 @@ kiosk_userid: 1002
 kiosk_profile: /var/lib/kiosk
 
 firefox_policies:
-  OfferToSaveLogins: false
-  PasswordManagerEnabled: false
-  OverridePostUpdatePage: ""
-  DisplayBookmarksToolbar: "never"
-  DisplayMenuBar: "never"
-  ShowHomeButton: false
+  BlockAboutAddons: true
+  BlockAboutConfig: true
+  BlockAboutProfiles: true
+  BlockAboutSupport: true
+  DisableAppUpdate: true
+  DisableAutoSafeMode: false
+  DisableDeveloperTools: true
   DisableFirefoxAccounts: true
   DisableFirefoxStudies: true
   DisableForgetButton: true
   DisableProfileImport: true
-  DisableAppUpdate: true
-  DontCheckDefaultBrowser: true
-  NoDefaultBookmarks: true
-  OverrideFirstRunPage: ""
-  PrivateBrowsingModeAvailability: 1
   DisableSafeMode: true
-  DisableDeveloperTools: true
+  DisplayBookmarksToolbar: "never"
+  DisplayMenuBar: "never"
+  DontCheckDefaultBrowser: true
+  EncryptedCharacterEncodingMenu: false
+  NoDefaultBookmarks: true
+  OfferToSaveLogins: false
+  OverrideFirstRunPage: ""
+  OverridePostUpdatePage: ""
+  PasswordManagerEnabled: false
   PrintingEnabled: false
+  PrivateBrowsingModeAvailability: 1
   SearchBar: "unified"
   SearchSuggestEnabled: false
-  BlockAboutConfig: true
-  BlockAboutAddons: true
-  BlockAboutProfiles: true
-  BlockAboutSupport: true
+  ShowHomeButton: false
   SanitizeOnShutdown:
-    History: true
-    FormData: true
     Downloads: true
+    FormData: true
+    History: true
     Sessions: true
   Permissions:
     Camera: { BlockNewRequests: true }
-    Microphone: { BlockNewRequests: true }
     Location: { BlockNewRequests: true }
+    Microphone: { BlockNewRequests: true }
+  Preferences:
+    "browser.sessionstore.max_resumed_crash_steps": 0
+    "browser.sessionstore.resume_from_crash": false
+    "browser.startup.homepage_override.mstone": "ignore"
+    "datareporting.policy.dataSubmissionPolicyAccepted": true
+    "datareporting.policy.dataSubmissionPolicyBypassNotification": true
   UserMessaging:
     ExtensionRecommendations: false
     FeatureRecommendations: false
-    SkipOnboarding: true
     MoreFromMozilla: false
+    SkipOnboarding: true
+    UrlbarInterventions: false
+    WhatsNew: false
   WebsiteFilter: >-
     {% if firefox_policies_whitelist | length > 0 -%}
     {{ {
