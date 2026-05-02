@@ -1,4 +1,8 @@
-FIREFOX_URL="{{ kiosk_url }}"
+{% if kiosk_url is string %}
+FIREFOX_URL={{ kiosk_url }}
+{% else %}
+FIREFOX_URL={{ kiosk_url | join(' ') }}
+{% endif %}
 FIREFOX_PROFILE="{{ kiosk_profile }}"
 {% if kiosk_mode %}
 FIREFOX_MODE=--kiosk
