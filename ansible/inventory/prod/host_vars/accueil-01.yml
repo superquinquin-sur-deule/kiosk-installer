@@ -1,2 +1,4 @@
 ---
-kiosk_url: https://choix-creneaux.superquinquin-sur-deule.org/admin
+kiosk_url:
+  - https://choix-creneaux.superquinquin-sur-deule.org/admin
+  - https://sqq-sdl.foodcoop12.trobz.com
