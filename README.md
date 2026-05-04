@@ -76,14 +76,17 @@ A special kiosk-vm lives in inventory, based on VM MAC address
 ```sh
 cd ansible/
 ansible-inventory --list
-ansible-playbook local.yml --limit dev
+ansible-playbook local.yml
+
+# use inventory/dev for caisse-vm host
+ansible-playbook local.yml --inventory inventory/dev
 ```
 
 Some roles require a vault password file.
 
 ```sh
 ansible-vault encrypt_string 'blah' --vault-password-file .vault
-nsible-playbook local.yml --limit dev --tags kiosk-auth --vault-password-file .vault
+ansible-playbook local.yml --tags kiosk-auth --vault-password-file .vault
 ```
 
 Run a local git daemon to validate the sequence boot with your current work
@@ -102,7 +105,7 @@ installer_branch: "florent/ansible"
 ```
 
 ```sh
-ansible-playbook local.yml --limit dev
+ansible-playbook local.yml --inventory inventory/dev
 ssh -F .ssh_config kiosk-dev sudo reboot
 ```
 
