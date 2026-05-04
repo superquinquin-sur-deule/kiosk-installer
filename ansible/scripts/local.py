@@ -1,19 +1,30 @@
 #!/usr/bin/env python3
+import configparser
 import json
+import os
+import subprocess
 import sys
 from pathlib import Path
 
-import yaml
-
-INVENTORY_DIR = Path(__file__).parent.parent / "inventory"
 FALLBACK_HOSTNAME = "kiosk"
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+def get_inventory_dir():
+    """Return the configured inventory directory."""
+    cfg = configparser.ConfigParser()
+    cfg.read(BASE_DIR / "ansible.cfg")
+    return cfg.get("defaults", "inventory", fallback="inventory/prod")
+
+
+INVENTORY_PATH = str(BASE_DIR / get_inventory_dir())
 
 
 def get_mac_from_interface(iface_path):
     """Read MAC address from a network interface path."""
     mac_file = iface_path / "address"
     if mac_file.exists():
-        return mac_file.read_text().strip()
+        return mac_file.read_text().strip().lower()
     return None
 
 
@@ -37,44 +48,17 @@ def detect_mac():
     return None
 
 
-def load_yaml_file(yml_file):
-    """Load single YAML file, return dict or empty dict on error."""
-    try:
-        with open(yml_file) as f:
-            return yaml.safe_load(f) or {}
-    except (FileNotFoundError, yaml.YAMLError) as e:
-        print(f"Error loading {yml_file}: {e}", file=sys.stderr)
-        return {}
-
-
 def load_inventory():
-    """Load and merge all YAML inventory files."""
-    data = {}
-    for yml_file in sorted(INVENTORY_DIR.glob("*.yml")):
-        data |= load_yaml_file(yml_file)
-    return data
-
-
-def find_matching_host(group, target_mac):
-    """Search in a group for hostname matching MAC address.
-
-    Returns (hostname, hostvars) or (None, None) if not found.
-    """
-    if not isinstance(group, dict):
-        return None, None
-
-    hosts = group.get("hosts", {})
-    if not isinstance(hosts, dict):
-        return None, None
-
-    target_mac_lower = target_mac.lower()
-    for hostname, hostvars in hosts.items():
-        if isinstance(hostvars, dict):
-            mac = hostvars.get("ansible_macaddress", "").lower()
-            if mac == target_mac_lower:
-                return hostname, hostvars
-
-    return None, None
+    """Load static inventory."""
+    try:
+        cmd = ["ansible-inventory", "--list", "--inventory", INVENTORY_PATH]
+        result = subprocess.run(
+            cmd, capture_output=True, text=True, check=True, env=os.environ
+        )
+        return json.loads(result.stdout)
+    except subprocess.CalledProcessError as e:
+        print(f"Error loading static inventory: {e.stderr}", file=sys.stderr)
+        return {}
 
 
 def find_host_by_mac(inventory, target_mac):
@@ -82,10 +66,10 @@ def find_host_by_mac(inventory, target_mac):
     if not target_mac:
         return None, None
 
-    for group in inventory.values():
-        hostname, hostvars = find_matching_host(group, target_mac)
-        if hostname:
-            return hostname, hostvars
+    hostvars = inventory.get("_meta", {}).get("hostvars", {})
+    for hostname, vars in hostvars.items():
+        if vars.get("ansible_macaddress", "").lower() == target_mac:
+            return hostname, vars
 
     return None, None
 
