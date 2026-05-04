@@ -1,4 +1,4 @@
-dev:
+caisses:
   hosts:
     caisse-vm:
       ansible_host: 127.0.0.1

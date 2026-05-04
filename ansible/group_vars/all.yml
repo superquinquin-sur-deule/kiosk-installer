@@ -3,9 +3,3 @@ admin_keys:
   lucas: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKf1pKT3a6KPepMwESP30xcaQURksQCTs+fShCzFkARQ"
   antoine: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILFzXQ+efxs/ngSHF+n0p79byamEFM9CKViLQsdA0APv"
   dmitri: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBLJPRMyYgVA4MF5Je2FRmQIIkGPxniCZHJNl6iRkrKg"
-
-firefox_policies_whitelist:
-  - "file:///home/*/Downloads/*"
-  - "https://*.foodcoop12.trobz.com/*"
-  - "https://*.superquinquin-sur-deule.org/*"
-  - "https://superquinquin.fr/*"

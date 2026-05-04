@@ -7,8 +7,6 @@ firefox_policies_extra:
   BlockAboutConfig: false
   BlockAboutAddons: false
 
-firefox_policies_whitelist: []
-
 vault_odoo_email: !vault |
   $ANSIBLE_VAULT;1.1;AES256
   39616261626635626465336633366434306463306266643831333862396465363132326461383337
