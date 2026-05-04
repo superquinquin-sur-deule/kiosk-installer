@@ -7,4 +7,10 @@
     - { role: installer, tags: [system, installer] }
     - { role: system, tags: [system] }
     - { role: kiosk, tags: [apps, kiosk] }
+
+- name: Configure POS
+  hosts: caisses
+  become: true
+
+  roles:
     - { role: kiosk-auth, tags: [apps, kiosk-auth] }
