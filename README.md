@@ -131,3 +131,4 @@ make test-plymouth
 - Print message box <https://gitlab.com/oficsu/kreelista/-/blob/master/kreelista.script>
 - Deploy Firefox with extensions <https://support.mozilla.org/en-US/kb/deploying-firefox-with-extensions>
 - Firefox administrator reference <https://firefox-admin-docs.mozilla.org/reference/policies/extensionsettings/>
+- Ansible Debian Docker Setup <https://github.com/teampat/ansible-debian-setup-docker/blob/main/install-docker.yml>
