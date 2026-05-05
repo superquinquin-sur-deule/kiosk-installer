@@ -13,4 +13,5 @@
   become: true
 
   roles:
-    - { role: kiosk-auth, tags: [apps, kiosk-auth] }
+    - { role: kiosk-auth, tags: [apps, auth] }
+    - { role: kiosk-posbox, tags: [apps, posbox] }
