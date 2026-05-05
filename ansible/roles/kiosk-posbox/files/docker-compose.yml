@@ -1,0 +1,44 @@
+services:
+  posbox:
+    container_name: posbox
+    image: ghcr.io/superquinquin-sur-deule/docker-posbox:latest
+    restart: unless-stopped
+    environment:
+      POSTGRES_HOST: pgsql
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+      ODOO_MODULES: hw_proxy,hw_escpos
+    volumes:
+      - /dev/bus/usb:/dev/bus/usb
+    logging:
+      driver: "journald"
+      options:
+        tag: "posbox"
+    tty: true
+    privileged: true
+    healthcheck:
+      test: ["CMD", "/healthcheck.py"]
+    depends_on:
+      pgsql:
+        condition: service_healthy
+
+  pgsql:
+    container_name: posbox-db
+    image: postgres:13-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+      POSTGRES_DB: postgres
+      PGDATA: /var/lib/pgsql/data
+    volumes:
+      - data:/var/lib/pgsql/data
+    logging:
+      driver: "journald"
+      options:
+        tag: "posbox-db"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER:-odoo}"]
+
+volumes:
+  data:
