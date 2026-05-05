@@ -2,3 +2,5 @@
 docker_url: "https://download.docker.com/linux/debian"
 docker_gpg_url: "{{ docker_url }}/gpg"
 docker_keyring_path: "/etc/apt/keyrings/docker.asc"
+
+posbox_dir: /var/lib/posbox

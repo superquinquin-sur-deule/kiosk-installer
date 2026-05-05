@@ -53,6 +53,7 @@ test-boot: $(TESTVMDISK)
 	qemu-system-x86_64 \
 	    -enable-kvm -cpu host -smp 4 -m 1G \
 	    -netdev user,id=net0,hostfwd=tcp::2222-:22 \
+	    -device qemu-xhci,id=usb \
 	    -device virtio-net-pci,netdev=net0,mac=aa:bb:cc:dd:ee:ff \
 	    -serial stdio $(if $(OVMF),-bios $(OVMF) )\
 	    -cdrom $(ISOPRESEED) \
