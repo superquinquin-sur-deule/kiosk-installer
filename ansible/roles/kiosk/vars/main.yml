@@ -9,7 +9,6 @@ firefox_policies:
   BlockAboutProfiles: true
   BlockAboutSupport: true
   DisableAppUpdate: true
-  DisableAutoSafeMode: false
   DisableDeveloperTools: true
   DisableFirefoxAccounts: true
   DisableFirefoxStudies: true
@@ -19,7 +18,6 @@ firefox_policies:
   DisplayBookmarksToolbar: "never"
   DisplayMenuBar: "never"
   DontCheckDefaultBrowser: true
-  EncryptedCharacterEncodingMenu: false
   NoDefaultBookmarks: true
   OfferToSaveLogins: false
   OverrideFirstRunPage: ""
@@ -30,6 +28,7 @@ firefox_policies:
   SearchBar: "unified"
   SearchSuggestEnabled: false
   ShowHomeButton: false
+  TranslateEnabled: false
   SanitizeOnShutdown:
     Downloads: true
     FormData: true
