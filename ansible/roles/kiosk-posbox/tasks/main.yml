@@ -12,6 +12,15 @@
     src: docker-compose.yml
     dest: "{{ posbox_dir }}/docker-compose.yml"
 
+- name: Configure posbox containers
+  ansible.builtin.copy:
+    dest: "{{ posbox_dir }}/.env"
+    mode: 0600
+    content: |
+      POSTGRES_DB={{ posbox_database }}
+      POSTGRES_USER={{ posbox_username }}
+      POSTGRES_PASSWORD={{ posbox_password }}
+
 - name: Start posbox containers
   community.docker.docker_compose_v2:
     project_src: "{{ posbox_dir }}"
