@@ -5,8 +5,8 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_HOST: pgsql
-      POSTGRES_USER: odoo
-      POSTGRES_PASSWORD: odoo
+      POSTGRES_USER: ${POSTGRES_USER:-odoo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-odoo}
       ODOO_MODULES: hw_proxy,hw_escpos
     volumes:
       - /dev/bus/usb:/dev/bus/usb
@@ -27,9 +27,9 @@ services:
     image: postgres:13-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: odoo
-      POSTGRES_PASSWORD: odoo
-      POSTGRES_DB: postgres
+      POSTGRES_DB: ${POSTGRES_DB:-odoo}
+      POSTGRES_USER: ${POSTGRES_USER:-odoo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-odoo}
       PGDATA: /var/lib/pgsql/data
     volumes:
       - data:/var/lib/pgsql/data
