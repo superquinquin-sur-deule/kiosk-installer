@@ -2,4 +2,4 @@ firefox_policies_whitelist:
   - "file:///home/*/Downloads/*"
   - "https://*.foodcoop12.trobz.com/*"
   - "https://*.superquinquin-sur-deule.org/*"
-  - "https://superquinquin.fr/*"
+  - "https://*.superquinquin.fr/*"
