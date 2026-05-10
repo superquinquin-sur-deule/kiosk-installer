@@ -1,4 +1,20 @@
 services:
+  traefik:
+    image: traefik:v3.7
+    container_name: posbox-proxy
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.websecure.address=:443"
+    ports:
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    logging:
+      driver: "journald"
+      options:
+        tag: "posbox-proxy"
+
   posbox:
     container_name: posbox
     image: ghcr.io/superquinquin-sur-deule/docker-posbox:latest
@@ -21,6 +37,17 @@ services:
     depends_on:
       pgsql:
         condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.posbox.loadbalancer.server.port=8069"
+      - "traefik.http.routers.posbox-api.rule=Host(`localhost`) && PathPrefix(`/hw_proxy`)"
+      - "traefik.http.routers.posbox-api.entrypoints=websecure"
+      - "traefik.http.routers.posbox-api.tls=true"
+      - "traefik.http.routers.posbox-status.rule=Host(`localhost`) && Path(`/`)"
+      - "traefik.http.routers.posbox-status.middlewares=to-status"
+      - "traefik.http.routers.posbox-status.entrypoints=websecure"
+      - "traefik.http.routers.posbox-status.tls=true"
+      - "traefik.http.middlewares.to-status.replacepath.path=/hw_proxy/status"
 
   pgsql:
     container_name: posbox-db
