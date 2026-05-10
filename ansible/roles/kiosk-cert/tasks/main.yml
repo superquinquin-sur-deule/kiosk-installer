@@ -1,0 +1,26 @@
+---
+- name: Create kiosk certificate directory
+  ansible.builtin.file:
+    path: "{{ cert_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Generate private key
+  community.crypto.openssl_privatekey:
+    path: "{{ key_file }}"
+    mode: "0600"
+
+- name: Generate CSR
+  community.crypto.openssl_csr:
+    path: "{{ csr_file }}"
+    privatekey_path: "{{ key_file }}"
+    common_name: "localhost"
+    subject_alt_name: "DNS:localhost,IP:127.0.0.1"
+
+- name: Generate self-signed certificate
+  community.crypto.x509_certificate:
+    path: "{{ cert_file }}"
+    csr_path: "{{ csr_file }}"
+    privatekey_path: "{{ key_file }}"
+    provider: selfsigned
+    selfsigned_not_after: "+3650d"

@@ -1,0 +1,5 @@
+---
+cert_dir: "/etc/ssl/kiosk"
+cert_file: "{{ cert_dir }}/localhost.crt"
+key_file: "{{ cert_dir }}/localhost.key"
+csr_file: "{{ cert_dir }}/localhost.csr"
