@@ -1,0 +1,9 @@
+tls:
+  certificates:
+    - certFile: "{{ cert_file }}"
+      keyFile: "{{ key_file }}"
+  stores:
+    default:
+      defaultCertificate:
+        certFile: "{{ cert_file }}"
+        keyFile: "{{ key_file }}"
