@@ -8,8 +8,8 @@
     state: directory
 
 - name: Deploy docker-compose.yml
-  ansible.builtin.copy:
-    src: docker-compose.yml
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
     dest: "{{ posbox_dir }}/docker-compose.yml"
 
 - name: Configure posbox containers
@@ -20,6 +20,11 @@
       POSTGRES_DB={{ posbox_database }}
       POSTGRES_USER={{ posbox_username }}
       POSTGRES_PASSWORD={{ posbox_password }}
+
+- name: Configure posbox proxy container
+  ansible.builtin.template:
+    src: traefik.yml.j2
+    dest: "{{ posbox_dir }}/traefik.yml"
 
 - name: Start posbox containers
   community.docker.docker_compose_v2:
