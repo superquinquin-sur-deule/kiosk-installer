@@ -10,6 +10,7 @@ Conflicts=getty@%i.service
 [Service]
 Type=simple
 EnvironmentFile=/etc/default/cage
+ExecStartPre=/usr/bin/mkdir -p $FIREFOX_PROFILE
 ExecStart=/usr/bin/cage -s -- /usr/bin/firefox --profile $FIREFOX_PROFILE $FIREFOX_MODE $FIREFOX_URL
 ExecStartPost=+sh -c "tty_name='%i'; exec chvt $${tty_name#tty}"
 Restart=always
