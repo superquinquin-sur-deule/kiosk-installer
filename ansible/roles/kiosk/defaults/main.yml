@@ -1,5 +1,6 @@
 ---
 kiosk_mode: yes
 kiosk_url: https://www.superquinquin.fr
+display_resolution: "1920x1080"
 firefox_policies_extra: {}
 firefox_policies_whitelist: []
