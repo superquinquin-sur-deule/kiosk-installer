@@ -33,13 +33,6 @@
     path: /usr/lib/firefox-esr/distribution/policies.json
     policies: "{{ firefox_policies | ansible.builtin.combine(firefox_policies_extra, recursive=True) }}"
 
-- name: Create kiosk profile directory
-  ansible.builtin.file:
-    path: "{{ kiosk_profile }}"
-    owner: "{{ kiosk_user }}"
-    group: "{{ kiosk_user }}"
-    state: directory
-
 - name: Configure pam.d
   ansible.builtin.copy:
     src: "pam.d-user"
