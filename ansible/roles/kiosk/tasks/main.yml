@@ -1,6 +1,16 @@
 ---
+- name: Install custom display outputs fact
+  ansible.builtin.copy:
+    src: display_outputs.py
+    dest: /etc/ansible/facts.d/display_outputs.fact
+    mode: "0755"
+
 - name: Gather service facts
   ansible.builtin.service_facts:
+
+- name: Gather custom facts
+  ansible.builtin.setup:
+    filter: ansible_local
 
 - name: Create kiosk user
   ansible.builtin.user:
