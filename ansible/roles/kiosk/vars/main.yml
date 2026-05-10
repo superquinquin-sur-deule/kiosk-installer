@@ -29,6 +29,9 @@ firefox_policies:
   SearchSuggestEnabled: false
   ShowHomeButton: false
   TranslateEnabled: false
+  Certificates:
+    Install:
+      - "{{ cert_file }}"
   SanitizeOnShutdown:
     Downloads: true
     FormData: true
