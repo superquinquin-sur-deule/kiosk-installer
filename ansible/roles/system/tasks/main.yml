@@ -121,13 +121,3 @@
     state: directory
     recurse: true
     path: /etc/ansible/facts.d
-
-- name: Install custom display outputs fact
-  ansible.builtin.copy:
-    src: display_outputs.py
-    dest: /etc/ansible/facts.d/display_outputs.fact
-    mode: "0755"
-  notify: setup-ansible-local
-
-- name: Trigger local handlers at end
-  meta: flush_handlers
