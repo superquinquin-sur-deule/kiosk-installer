@@ -28,6 +28,18 @@
       - firefox-esr
     state: present
 
+- name: Configure Firefox policies
+  firefox_policies:
+    path: /usr/lib/firefox-esr/distribution/policies.json
+    policies: "{{ firefox_policies | ansible.builtin.combine(firefox_policies_extra, recursive=True) }}"
+
+- name: Create kiosk profile directory
+  ansible.builtin.file:
+    path: "{{ kiosk_profile }}"
+    owner: "{{ kiosk_user }}"
+    group: "{{ kiosk_user }}"
+    state: directory
+
 - name: Configure pam.d
   ansible.builtin.copy:
     src: "pam.d-user"
@@ -79,15 +91,3 @@
     src: /usr/lib/systemd/system/graphical.target
     dest: /etc/systemd/system/default.target
     state: link
-
-- name: Configure Firefox policies
-  firefox_policies:
-    path: /usr/lib/firefox-esr/distribution/policies.json
-    policies: "{{ firefox_policies | ansible.builtin.combine(firefox_policies_extra, recursive=True) }}"
-
-- name: Create kiosk profile directory
-  ansible.builtin.file:
-    path: "{{ kiosk_profile }}"
-    owner: "{{ kiosk_user }}"
-    group: "{{ kiosk_user }}"
-    state: directory
