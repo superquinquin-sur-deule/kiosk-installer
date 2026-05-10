@@ -1,7 +1,7 @@
 ---
 kiosk_user: kiosk
 kiosk_userid: 1002
-kiosk_profile: /var/lib/kiosk
+kiosk_profile: "/run/user/{{ kiosk_userid }}/firefox"
 
 firefox_policies:
   BlockAboutAddons: true
