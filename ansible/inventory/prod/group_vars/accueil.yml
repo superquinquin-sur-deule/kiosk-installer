@@ -1,2 +1,5 @@
 ---
 kiosk_mode: no
+firefox_policies_whitelist:
+  - "https://*.superquinquin.fr/*"
+  - "https://*.superquinquin-sur-deule.org/*"
