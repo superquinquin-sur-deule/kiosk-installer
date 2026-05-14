@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import configparser
 import json
 import os
 import subprocess
@@ -7,17 +6,12 @@ import sys
 from pathlib import Path
 
 FALLBACK_HOSTNAME = "kiosk"
-BASE_DIR = Path(__file__).resolve().parent.parent
+FALLBACK_STATIC = Path(__file__).resolve().parent.parent / "inventory/prod"
 
 
 def get_inventory_dir():
-    """Return the configured inventory directory."""
-    cfg = configparser.ConfigParser()
-    cfg.read(BASE_DIR / "ansible.cfg")
-    return cfg.get("defaults", "inventory", fallback="inventory/prod")
-
-
-INVENTORY_PATH = str(BASE_DIR / get_inventory_dir())
+    """Return the configured local inventory."""
+    return os.environ.get("ANSIBLE_STATIC", FALLBACK_STATIC)
 
 
 def get_mac_from_interface(iface_path):
@@ -51,7 +45,7 @@ def detect_mac():
 def load_inventory():
     """Load static inventory."""
     try:
-        cmd = ["ansible-inventory", "--list", "--inventory", INVENTORY_PATH]
+        cmd = ["ansible-inventory", "--list", "--inventory", get_inventory_dir()]
         result = subprocess.run(
             cmd, capture_output=True, text=True, check=True, env=os.environ
         )

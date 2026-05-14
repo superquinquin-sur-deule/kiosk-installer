@@ -91,21 +91,22 @@ ansible-playbook local.yml --tags kiosk-auth --vault-password-file .vault
 
 Run a local git daemon to validate the sequence boot with your current work
 
+```yaml
+# Edit kiosk-installer env variables
+# ansible/roles/installer/defaults/main.yml
+installer_branch: "florent/ansible"
+installer_inventory: "inventory/dev"
+installer_url: "git://10.0.2.2/"
+```
+
 ```sh
 # Open a side terminal for daemonizing git
 git commit -a -m "wip: feat: -"
 git daemon --reuseaddr --base-path=. --export-all --verbose --enable=receive-pack
 ```
 
-```yaml
-# Edit kiosk-installer env variables
-# ansible/roles/installer/defaults/main.yml
-installer_url: "git://10.0.2.2/"
-installer_branch: "florent/ansible"
-```
-
 ```sh
-ansible-playbook local.yml --inventory inventory/dev
+ansible-playbook local.yml --inventory inventory/dev --tags installer
 ssh -F .ssh_config kiosk-dev sudo reboot
 ```
 
