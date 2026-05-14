@@ -1,7 +1,8 @@
 services:
   traefik:
-    image: traefik:v3.7
     container_name: posbox-proxy
+    image: traefik:v3.7
+    restart: unless-stopped
     command:
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
