@@ -9,7 +9,10 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*.superquinquin.fr/*web/login*"],
+      "matches": [
+        "https://*.superquinquin.fr/*",
+        "https://*.foodcoop12.trobz.com/*"
+      ],
       "js": ["content.js"],
       "run_at": "document_idle"
     }
