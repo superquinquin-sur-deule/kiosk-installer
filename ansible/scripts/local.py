@@ -74,6 +74,24 @@ def find_host_by_mac(inventory, target_mac):
     return None, None
 
 
+def resolve_membership(inventory, hostname):
+    """Returns all groups to which the host belongs."""
+    if not hostname:
+        return ["ungrouped"]
+
+    groups = {g for g, d in inventory.items() if hostname in d.get("hosts", [])}
+
+    def add_parents(child):
+        for parent, d in inventory.items():
+            if child in d.get("children", []) and parent not in groups:
+                groups.add(parent)
+                add_parents(parent)
+
+    for g in list(groups):
+        add_parents(g)
+    return list(groups) or ["ungrouped"]
+
+
 def build_final_hostvars(hostvars):
     """Build hostvars with ansible connection defaults."""
     return {
@@ -94,13 +112,14 @@ def generate():
         hostname = FALLBACK_HOSTNAME
         hostvars = {}
 
-    # Build final hostvars with ansible defaults
-    final_vars = build_final_hostvars(hostvars)
+    # Find all target related groups
+    groups = resolve_membership(inventory, hostname)
 
+    # Build final result
     return {
-        "_meta": {"hostvars": {hostname: final_vars}},
-        "all": {"hosts": [hostname], "children": ["ungrouped"]},
-        "ungrouped": {"hosts": [hostname]},
+        "_meta": {"hostvars": {hostname: build_final_hostvars(hostvars)}},
+        "all": {"children": groups},
+        **{g: {"hosts": [hostname]} for g in groups},
     }
 
 
