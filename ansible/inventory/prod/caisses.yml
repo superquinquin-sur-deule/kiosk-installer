@@ -5,8 +5,8 @@ caisses:
       ansible_host: 192.168.1.112
       ansible_macaddress: "9c:7b:ef:b5:f0:81"
     caisse-02:
-      ansible_host: 192.168.1.27
-      ansible_macaddress: "9c:7b:ef:b5:ef:9c"
-    caisse-03:
       ansible_host: 192.168.1.12
       ansible_macaddress: "c8:d3:ff:3f:8c:e8"
+    caisse-03:
+      ansible_host: 192.168.1.27
+      ansible_macaddress: "9c:7b:ef:b5:ef:9c"
