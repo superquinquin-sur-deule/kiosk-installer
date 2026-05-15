@@ -1,16 +1,6 @@
 ---
-- name: Install custom display outputs fact
-  ansible.builtin.copy:
-    src: display_outputs.py
-    dest: /etc/ansible/facts.d/display_outputs.fact
-    mode: "0755"
-
 - name: Gather service facts
   ansible.builtin.service_facts:
-
-- name: Gather custom facts
-  ansible.builtin.setup:
-    filter: ansible_local
 
 - name: Create kiosk user
   ansible.builtin.user:
@@ -49,19 +39,16 @@
     - systemd-daemon-reload
     - restart-cage
 
-- name: Create kanshi configuration directory
-  ansible.builtin.file:
-    path: /etc/kanshi
-    state: directory
+- name: Install dynamic display configuration
+  ansible.builtin.copy:
+    src: autokanshi.py
+    dest: /usr/local/bin/autokanshi
     mode: "0755"
 
 - name: Configure kanshi service
   ansible.builtin.template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-  loop:
-    - { src: "kanshi.j2", dest: "/etc/kanshi/config" }
-    - { src: "kanshi.service.j2", dest: "/etc/systemd/system/kanshi.service" }
+    src: "kanshi.service.j2"
+    dest: "/etc/systemd/system/kanshi.service"
   notify:
     - systemd-daemon-reload
     - restart-kanshi

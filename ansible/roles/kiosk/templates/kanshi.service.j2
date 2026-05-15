@@ -11,6 +11,7 @@ User={{ kiosk_user }}
 Group={{ kiosk_user }}
 Type=simple
 Environment=XDG_RUNTIME_DIR=/run/user/{{ kiosk_userid }}
+ExecStartPre=+/usr/local/bin/autokanshi --write-to /etc/kanshi/config
 ExecStart=/usr/bin/kanshi --config /etc/kanshi/config
 Restart=always
 RestartSec=1s
