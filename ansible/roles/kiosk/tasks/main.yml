@@ -18,64 +18,11 @@
       - firefox-esr
     state: present
 
-- name: Configure Firefox policies
-  firefox_policies:
-    path: /usr/lib/firefox-esr/distribution/policies.json
-    policies: "{{ firefox_policies | ansible.builtin.combine(firefox_policies_extra, recursive=True) }}"
-
-- name: Configure pam.d
-  ansible.builtin.copy:
-    src: "pam.d-user"
-    dest: "/etc/pam.d/{{ kiosk_user }}"
-
-- name: Configure cage service
-  ansible.builtin.template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+- name: Deploy service configuration
+  ansible.builtin.include_tasks: "{{ service }}.yml"
   loop:
-    - { src: "cage.j2", dest: "/etc/default/cage" }
-    - { src: "cage.service.j2", dest: "/etc/systemd/system/cage@.service" }
-  notify:
-    - systemd-daemon-reload
-    - restart-cage
-
-- name: Install dynamic display configuration
-  ansible.builtin.copy:
-    src: autokanshi.py
-    dest: /usr/local/bin/autokanshi
-    mode: "0755"
-
-- name: Deploy udev scheduler rules
-  ansible.builtin.copy:
-    dest: /etc/udev/rules.d/70-autokanshi.rules
-    mode: "0644"
-    content: |
-      SUBSYSTEM=="drm", ACTION=="change", RUN+="/usr/local/bin/autokanshi --write-to /etc/kanshi/config"
-  notify: reload-udev-rules
-
-- name: Configure kanshi service
-  ansible.builtin.template:
-    src: "kanshi.service.j2"
-    dest: "/etc/systemd/system/kanshi.service"
-  notify:
-    - systemd-daemon-reload
-    - restart-kanshi
-
-- name: Trigger systemd handlers now
-  meta: flush_handlers
-
-- name: Enable cage service on tty1
-  ansible.builtin.systemd_service:
-    name: cage@tty1.service
-    enabled: true
-
-- name: Enable kanshi service
-  ansible.builtin.systemd_service:
-    name: kanshi.service
-    enabled: true
-
-- name: Set default target to graphical
-  ansible.builtin.file:
-    src: /usr/lib/systemd/system/graphical.target
-    dest: /etc/systemd/system/default.target
-    state: link
+    - cage
+    - kanshi
+    - firefox
+  loop_control:
+    loop_var: service
