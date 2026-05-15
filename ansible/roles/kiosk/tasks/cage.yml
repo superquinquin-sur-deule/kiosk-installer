@@ -1,0 +1,27 @@
+---
+- name: Configure pam.d
+  ansible.builtin.copy:
+    src: "pam.d-user"
+    dest: "/etc/pam.d/{{ kiosk_user }}"
+
+- name: Configure cage service
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop:
+    - { src: "cage.j2", dest: "/etc/default/cage" }
+    - { src: "cage.service.j2", dest: "/etc/systemd/system/cage@.service" }
+  notify:
+    - systemd-daemon-reload
+    - restart-cage
+
+- name: Enable cage service on tty1
+  ansible.builtin.systemd_service:
+    name: cage@tty1.service
+    enabled: true
+
+- name: Set default target to graphical
+  ansible.builtin.file:
+    src: /usr/lib/systemd/system/graphical.target
+    dest: /etc/systemd/system/default.target
+    state: link
