@@ -45,6 +45,14 @@
     dest: /usr/local/bin/autokanshi
     mode: "0755"
 
+- name: Deploy udev scheduler rules
+  ansible.builtin.copy:
+    dest: /etc/udev/rules.d/70-autokanshi.rules
+    mode: "0644"
+    content: |
+      SUBSYSTEM=="drm", ACTION=="change", RUN+="/usr/local/bin/autokanshi --write-to /etc/kanshi/config"
+  notify: reload-udev-rules
+
 - name: Configure kanshi service
   ansible.builtin.template:
     src: "kanshi.service.j2"

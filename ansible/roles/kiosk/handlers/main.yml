@@ -3,6 +3,12 @@
     daemon_reload: true
   listen: systemd-daemon-reload
 
+- name: Reload udev rules
+  ansible.builtin.shell: |
+    udevadm control --reload-rules && \
+    udevadm trigger --subsystem-match=drm
+  listen: reload-udev-rules
+
 - name: Restart cage service on tty1
   systemd:
     name: cage@tty1.service
