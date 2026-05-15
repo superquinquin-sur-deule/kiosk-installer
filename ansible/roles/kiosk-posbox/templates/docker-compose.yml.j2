@@ -31,6 +31,7 @@ services:
       ODOO_MODULES: hw_proxy,hw_escpos
     volumes:
       - /dev/bus/usb:/dev/bus/usb
+      - /etc/localtime:/etc/localtime:ro
     logging:
       driver: "journald"
       options:
