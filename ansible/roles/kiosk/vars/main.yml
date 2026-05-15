@@ -15,9 +15,10 @@ firefox_policies:
   DisableForgetButton: true
   DisableProfileImport: true
   DisableSafeMode: true
-  DisplayBookmarksToolbar: "never"
+  DisplayBookmarksToolbar: "{{ 'always' if firefox_bookmarks_bar_enabled else 'never' }}"
   DisplayMenuBar: "never"
   DontCheckDefaultBrowser: true
+  ManagedBookmarks: "{{ firefox_bookmarks }}"
   NoDefaultBookmarks: true
   OfferToSaveLogins: false
   OverrideFirstRunPage: ""

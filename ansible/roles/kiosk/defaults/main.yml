@@ -4,3 +4,5 @@ kiosk_url: https://www.superquinquin.fr
 display_resolution: "1920x1080"
 firefox_policies_extra: {}
 firefox_policies_whitelist: []
+firefox_bookmarks_bar_enabled: false
+firefox_bookmarks: []

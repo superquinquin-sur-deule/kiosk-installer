@@ -1,7 +1,5 @@
 ---
 kiosk_url:
-  - https://choix-creneaux.superquinquin-sur-deule.org/admin
   - https://gestion-sdl.superquinquin.fr
-  - https://accueil-staging.superquinquin-sur-deule.org/admin/all
-  - https://accueil.superquinquin-sur-deule.org/admin/all
+  - https://accueil.superquinquin-sur-deule.org/all
   
