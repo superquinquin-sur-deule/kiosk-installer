@@ -115,9 +115,3 @@
       {{ pubkey }} {{ name }}
       {% endfor %}
     exclusive: true
-
-- name: Create directory for ansible custom facts
-  ansible.builtin.file:
-    state: directory
-    recurse: true
-    path: /etc/ansible/facts.d
