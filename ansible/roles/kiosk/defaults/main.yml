@@ -3,3 +3,5 @@ kiosk_mode: no
 kiosk_url: https://www.superquinquin.fr
 firefox_policies_extra: {}
 firefox_policies_whitelist: []
+firefox_bookmarks_bar_enabled: false
+firefox_bookmarks: []
