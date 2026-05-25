@@ -11,7 +11,7 @@ DRM = Path("/sys/class/drm")
 PREFERRED = "1920x1080"
 PROFILE_TEMPLATE = """{% for config in configs %}profile {{ config.profile }} {
 {%- for output in config.outputs %}
-    output "{{ output.name }}" mode {{ output.display_mode }} position {{ output.position }}
+    output "{{ output.name }}" mode {{ output.display_mode }}@60 position {{ output.position }}
 {%- endfor %}
 }
 {% endfor %}"""
