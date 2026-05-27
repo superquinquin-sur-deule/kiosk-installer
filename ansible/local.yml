@@ -15,3 +15,10 @@
   roles:
     - { role: kiosk-auth, tags: [apps, auth] }
     - { role: kiosk-posbox, tags: [apps, posbox] }
+
+- name: Configure accueil
+  hosts: accueil
+  become: true
+
+  roles:
+    - { role: node-exporter, tags: [apps, node-exporter] }
