@@ -1,4 +1,4 @@
-ISOBASEFILE  = debian-13.4.0-amd64-netinst.iso
+ISOBASEFILE  = debian-13.5.0-amd64-netinst.iso
 ISOPRESEED   = preseed-$(ISOBASEFILE)
 ISOLABEL     = KIOSK
 TESTVMDISK   = test-disk.qcow2
