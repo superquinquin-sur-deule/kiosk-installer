@@ -7,6 +7,9 @@ on:
         description: "Release version (e.g. 1.0.0)"
         required: true
 
+env:
+  DEBIAN_VERSION: "13.5.0"
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -22,16 +25,16 @@ jobs:
         id: cache-iso
         uses: actions/cache@v4
         with:
-          path: debian-13.4.0-amd64-netinst.iso
-          key: debian-13.4.0-amd64-netinst.iso
+          path: debian-${{ env.DEBIAN_VERSION }}-amd64-netinst.iso
+          key: debian-${{ env.DEBIAN_VERSION }}-amd64-netinst.iso
 
       - name: Download base ISO
         if: steps.cache-iso.outputs.cache-hit != 'true'
         run: |
-          wget -q https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-13.4.0-amd64-netinst.iso
+          wget -q https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-${{ env.DEBIAN_VERSION }}-amd64-netinst.iso
 
       - name: Build preseeded ISO
-        run: make VERSION=v${{ inputs.version }} preseed-debian-13.4.0-amd64-netinst.iso
+        run: make VERSION=v${{ inputs.version }} preseed-debian-${{ env.DEBIAN_VERSION }}-amd64-netinst.iso
 
       - name: Create tag and release
         env:
@@ -42,4 +45,4 @@ jobs:
           gh release create "v${{ inputs.version }}" \
             --title "v${{ inputs.version }}" \
             --generate-notes \
-            preseed-debian-13.4.0-amd64-netinst.iso
+            preseed-debian-${{ env.DEBIAN_VERSION }}-amd64-netinst.iso
