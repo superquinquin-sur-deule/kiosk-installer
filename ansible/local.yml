@@ -13,7 +13,7 @@
   become: true
 
   roles:
-    - { role: kiosk-auth, tags: [apps, auth] }
+    - { role: kiosk-addon, tags: [apps, addon] }
     - { role: kiosk-posbox, tags: [apps, posbox] }
 
 - name: Configure accueil

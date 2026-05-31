@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Odoo Kiosk Auth",
+  "name": "Odoo Kiosk Addon",
   "version": "{{ firefox_extension_version }}",
   "browser_specific_settings": {
     "gecko": {
@@ -13,7 +13,7 @@
         "https://*.superquinquin.fr/*",
         "https://*.foodcoop12.trobz.com/*"
       ],
-      "js": ["content.js"],
+      "js": ["auth.js", "refresh.js"],
       "run_at": "document_idle"
     }
   ]
