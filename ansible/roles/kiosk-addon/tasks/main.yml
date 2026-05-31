@@ -10,14 +10,15 @@
     state: directory
     mode: "0755"
 
-- name: Deploy kiosk-auth extension
+- name: Deploy kiosk-addon extension
   ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "{{ firefox_extension_dir }}/{{ item.dest }}"
     mode: "0644"
   loop:
-    - { src: "content.js.j2", dest: "content.js" }
     - { src: "manifest.json.j2", dest: "manifest.json" }
+    - { src: "auth.js.j2", dest: "auth.js" }
+    - { src: "refresh.js.j2", dest: "refresh.js" }
 
 - name: Create extension in .xpi archive format
   community.general.archive:

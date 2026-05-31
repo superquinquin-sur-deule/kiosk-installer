@@ -1,7 +1,7 @@
 ---
-firefox_extension_id: "kiosk-auth@superquinquin-sur-deule.org"
+firefox_extension_id: "kiosk-addon@superquinquin-sur-deule.org"
 firefox_extension_dir: "/usr/share/firefox-esr/distribution/extensions/{{ firefox_extension_id }}"
-firefox_extension_version: "0.1.{{ lookup('template', 'content.js.j2') | hash('md5') | truncate(8, True, '') }}"
+firefox_extension_version: "0.2"
 firefox_extension_policies:
   Preferences:
     xpinstall.signatures.required: false
