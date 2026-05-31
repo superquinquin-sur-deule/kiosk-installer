@@ -1,10 +1,18 @@
 ---
 kiosk_mode: no
+kiosk_url:
+  - https://sesame.superquinquin-sur-deule.org
+  - https://gestion-sdl.superquinquin.fr/discovery
+  - https://accueil.superquinquin-sur-deule.org
+
 firefox_policies_whitelist:
   - "https://*.superquinquin.fr/*"
   - "https://*.superquinquin-sur-deule.org/*"
+
 firefox_bookmarks_bar_enabled: true
 firefox_bookmarks:
+  - url: https://sesame.superquinquin-sur-deule.org
+    name: Sésame
   - url: https://gestion-sdl.superquinquin.fr/
     name: Odoo
   - url: https://accueil.superquinquin-sur-deule.org
