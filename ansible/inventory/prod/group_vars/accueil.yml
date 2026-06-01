@@ -8,6 +8,9 @@ kiosk_url:
 firefox_policies_whitelist:
   - "https://*.superquinquin.fr/*"
   - "https://*.superquinquin-sur-deule.org/*"
+  - "https://www.google.com/recaptcha/*"
+  - "https://www.gstatic.com/recaptcha/*"
+  - "https://fonts.gstatic.com/*"
 
 firefox_bookmarks_bar_enabled: true
 firefox_bookmarks:
