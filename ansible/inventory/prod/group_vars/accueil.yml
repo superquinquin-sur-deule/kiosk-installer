@@ -12,6 +12,12 @@ firefox_policies_whitelist:
   - "https://www.gstatic.com/recaptcha/*"
   - "https://fonts.gstatic.com/*"
 
+firefox_policies_extra:
+  Permissions:
+    Camera:
+      Allow:
+        - "https://sesame.superquinquin-sur-deule.org"
+
 firefox_bookmarks_bar_enabled: true
 firefox_bookmarks:
   - url: https://sesame.superquinquin-sur-deule.org
