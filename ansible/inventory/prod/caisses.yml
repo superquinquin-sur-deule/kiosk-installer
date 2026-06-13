@@ -9,4 +9,4 @@ caisses:
       ansible_macaddress: "c8:d3:ff:3f:8c:e8"
     caisse-03:
       ansible_host: 192.168.1.239
-      ansible_macaddress: "9c:7b:ef:b5:f0:07"
+      ansible_macaddress: "9c:7b:ef:b5:c4:01"
