@@ -11,6 +11,14 @@
     const target = document.querySelector(".pos-topheader .header-button");
     if (!target) return;
 
+    target.style.display = "none";
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        target.style.display =
+          target.style.display === "none" ? "block" : "none";
+      }
+    });
+
     target.insertAdjacentElement("beforebegin", btn);
     observer.disconnect();
   });
