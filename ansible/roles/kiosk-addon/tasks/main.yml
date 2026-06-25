@@ -19,6 +19,7 @@
     - { src: "manifest.json.j2", dest: "manifest.json" }
     - { src: "auth.js.j2", dest: "auth.js" }
     - { src: "header.js", dest: "header.js" }
+    - { src: "invoice.js", dest: "invoice.js" }
 
 - name: Create extension in .xpi archive format
   community.general.archive:
