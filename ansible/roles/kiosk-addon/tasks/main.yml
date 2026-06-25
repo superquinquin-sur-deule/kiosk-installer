@@ -18,7 +18,7 @@
   loop:
     - { src: "manifest.json.j2", dest: "manifest.json" }
     - { src: "auth.js.j2", dest: "auth.js" }
-    - { src: "refresh.js.j2", dest: "refresh.js" }
+    - { src: "header.js", dest: "header.js" }
 
 - name: Create extension in .xpi archive format
   community.general.archive:
