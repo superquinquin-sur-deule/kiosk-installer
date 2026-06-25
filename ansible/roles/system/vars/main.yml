@@ -11,7 +11,7 @@ sysctl_settings:
       net.ipv4.ip_forward: "0"
       net.ipv4.conf.all.send_redirects: "0"
       net.ipv4.tcp_syncookies: "1"
-      net.ipv4.icmp_echo_ignore_all: "1"
+      net.ipv4.icmp_echo_ignore_all: "0"
       kernel.kptr_restrict: "2"
       kernel.dmesg_restrict: "1"
       kernel.printk: "3 3 3 3"
