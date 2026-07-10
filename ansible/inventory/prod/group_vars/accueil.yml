@@ -4,6 +4,7 @@ kiosk_url:
   - https://sesame.superquinquin-sur-deule.org
   - https://gestion-sdl.superquinquin.fr/discovery
   - https://accueil.superquinquin-sur-deule.org
+  - https://fa83f711.sibforms.com/v2/serve/MUIFAHqR38nwXpamub9J9S5w35G0wdofCNk8bon0UQ8BcfpPNNt_3WMDmdFNrz302s9dtTKHj4hrYy4dXaCTpu0KxC_2GHWbZ766ykZoooHld_lwUFAh2d9hviAvhle0-qUaL-EMv5mzhaHi5u2hkWcqY1uuW-ZrcbVEDJW72P4FFTKdM1VFK8mT5FgtzKcHVY8ETcZeycISVuVv
 
 firefox_policies_whitelist:
   - "https://*.superquinquin.fr/*"
@@ -11,6 +12,7 @@ firefox_policies_whitelist:
   - "https://www.google.com/recaptcha/*"
   - "https://www.gstatic.com/recaptcha/*"
   - "https://fonts.gstatic.com/*"
+  - "https://fa83f711.sibforms.com/*"
 
 firefox_policies_extra:
   Permissions:
