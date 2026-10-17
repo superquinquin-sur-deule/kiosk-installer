@@ -1,6 +1,0 @@
----
-reception:
-  hosts:
-    reception-01:
-      ansible_host: 192.168.3.18
-      ansible_macaddress: "00:1e:37:4e:e1:90"
